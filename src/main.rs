@@ -45,6 +45,9 @@ async fn main() {
         args.ffmpeg_path.clone(),
         args.ffprobe_path.clone(),
         args.resume_max_age_days,
+        args.max_connections_per_file,
+        std::time::Duration::from_secs(args.connect_timeout_secs),
+        std::time::Duration::from_secs(args.read_timeout_secs),
     );
 
     // stdin 读取循环

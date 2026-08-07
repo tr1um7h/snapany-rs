@@ -4,6 +4,7 @@ use crate::task::{run_task, Task};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::sync::Semaphore;
 use tokio_util::sync::CancellationToken;
 
@@ -14,6 +15,9 @@ pub struct TaskManager {
     ffmpeg_path: Arc<Path>,
     ffprobe_path: Arc<Path>,
     resume_max_age_days: u64,
+    max_connections: usize,
+    connect_timeout: Duration,
+    read_timeout: Duration,
 }
 
 impl TaskManager {
@@ -23,6 +27,9 @@ impl TaskManager {
         ffmpeg_path: PathBuf,
         ffprobe_path: PathBuf,
         resume_max_age_days: u64,
+        max_connections: usize,
+        connect_timeout: Duration,
+        read_timeout: Duration,
     ) -> Self {
         Self {
             tasks: HashMap::new(),
@@ -31,6 +38,9 @@ impl TaskManager {
             ffmpeg_path: Arc::from(ffmpeg_path),
             ffprobe_path: Arc::from(ffprobe_path),
             resume_max_age_days,
+            max_connections,
+            connect_timeout,
+            read_timeout,
         }
     }
 
@@ -58,6 +68,9 @@ impl TaskManager {
         let ffmpeg_path = self.ffmpeg_path.clone();
         let ffprobe_path = self.ffprobe_path.clone();
         let resume_max_age_days = self.resume_max_age_days;
+        let max_connections = self.max_connections;
+        let connect_timeout = self.connect_timeout;
+        let read_timeout = self.read_timeout;
         let _tasks_ref = &mut self.tasks;
 
         // spawn task in background
@@ -72,6 +85,9 @@ impl TaskManager {
                 out.clone(),
                 semaphore,
                 resume_max_age_days,
+                max_connections,
+                connect_timeout,
+                read_timeout,
             ));
 
             // We can't easily catch_unwind an async fn, so we use a wrapper

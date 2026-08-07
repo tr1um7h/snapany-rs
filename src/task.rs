@@ -4,6 +4,7 @@ use crate::protocol::{codes, messages, FileSpec, StartTaskPayload};
 use crate::{converter, downloader, mover, paths};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::sync::Semaphore;
 use tokio_util::sync::CancellationToken;
 
@@ -73,6 +74,9 @@ pub async fn run_task(
     output: OutputWriter,
     semaphore: Arc<Semaphore>,
     resume_max_age_days: u64,
+    max_connections: usize,
+    connect_timeout: Duration,
+    read_timeout: Duration,
 ) -> Result<(), TaskError> {
     let _guard = CleanupGuard {
         dir: paths::temp_root(&task.temp_dir, &task.id),
@@ -142,6 +146,9 @@ pub async fn run_task(
         &task.cancel_token,
         &task.output_dir,
         resume_max_age_days,
+        max_connections,
+        connect_timeout,
+        read_timeout,
     )
     .await
     .map_err(|e| to_task_error(e, &task.id))?;

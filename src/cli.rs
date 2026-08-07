@@ -18,4 +18,13 @@ pub struct Args {
 
     #[arg(long = "resume-max-age-days", default_value_t = 7)]
     pub resume_max_age_days: u64,
+
+    #[arg(long = "max-connections-per-file", default_value_t = 4)]
+    pub max_connections_per_file: usize,
+
+    #[arg(long = "connect-timeout-secs", default_value_t = 30)]
+    pub connect_timeout_secs: u64,
+
+    #[arg(long = "read-timeout-secs", default_value_t = 60)]
+    pub read_timeout_secs: u64,
 }

@@ -15,6 +15,9 @@ pub struct ResumeMeta {
     pub total_size: u64,
     pub etag: Option<String>,
     pub last_modified: Option<String>,
+    /// 分片下载: 每个分片是否完成
+    #[serde(default)]
+    pub completed_chunks: Vec<bool>,
 }
 
 impl ResumeMeta {

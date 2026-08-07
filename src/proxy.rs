@@ -3,9 +3,18 @@ use std::time::Duration;
 
 /// 根据代理配置字符串构建 reqwest::Client
 pub fn build_client(proxy_str: &str) -> Client {
+    build_client_with_timeout(proxy_str, Duration::from_secs(30), Duration::from_secs(300))
+}
+
+/// 根据代理配置和超时设置构建 reqwest::Client
+pub fn build_client_with_timeout(
+    proxy_str: &str,
+    connect_timeout: Duration,
+    read_timeout: Duration,
+) -> Client {
     let mut builder = Client::builder()
-        .timeout(Duration::from_secs(300))
-        .connect_timeout(Duration::from_secs(30));
+        .timeout(read_timeout)
+        .connect_timeout(connect_timeout);
 
     match proxy_str {
         "direct" => {

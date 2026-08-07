@@ -46,6 +46,7 @@ fn test_meta_round_trip() {
         total_size: 104857600,
         etag: Some("\"abc123\"".to_string()),
         last_modified: Some("Wed, 08 Aug 2026 10:00:00 GMT".to_string()),
+        completed_chunks: vec![],
     };
     let path = tmp.path().join("test.partial.meta");
     meta.save(&path).unwrap();
@@ -71,6 +72,7 @@ fn test_etag_match() {
         total_size: 200,
         etag: Some("\"abc\"".to_string()),
         last_modified: None,
+        completed_chunks: vec![],
     };
     assert!(meta.matches_server(Some("\"abc\""), None));
     assert!(!meta.matches_server(Some("\"xyz\""), None));
@@ -84,6 +86,7 @@ fn test_last_modified_match() {
         total_size: 200,
         etag: None,
         last_modified: Some("Wed, 08 Aug 2026 10:00:00 GMT".to_string()),
+        completed_chunks: vec![],
     };
     assert!(meta.matches_server(None, Some("Wed, 08 Aug 2026 10:00:00 GMT")));
     assert!(!meta.matches_server(None, Some("Thu, 09 Aug 2026 10:00:00 GMT")));
@@ -97,6 +100,7 @@ fn test_no_identifiers_no_match() {
         total_size: 200,
         etag: None,
         last_modified: None,
+        completed_chunks: vec![],
     };
     // No identifiers to compare -> conservatively false
     assert!(!meta.matches_server(None, None));
