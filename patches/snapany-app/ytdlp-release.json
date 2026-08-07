@@ -1,0 +1,7 @@
+{
+  "version": "2026.07.04",
+  "downloadUrls": {
+    "windows": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.07.04/yt-dlp.exe",
+    "macOS": "https://github.com/yt-dlp/yt-dlp/releases/download/2026.07.04/yt-dlp_macos"
+  }
+}
