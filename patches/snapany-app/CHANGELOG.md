@@ -2,6 +2,52 @@
 
 SnapAny App 补丁修改记录
 
+## [1.1.0] - 2026-08-08
+
+### 新增
+- 批量下载并发控制（`maxParsingTasks` 和 `batchSize` 配置）
+- yt-dlp 版本自动检测（3 个月检查间隔 + GitHub API + 缓存策略）
+- 分块并行下载（自适应连接数）
+- 断点续传（Range 支持 + 统计日志 + TTL 清理）
+- 粘贴 URL 成功提示（显示识别到的 URL 数量）
+
+### 修改
+- `startDownload` 改为异步执行，立即返回任务列表，UI 即时更新
+- 解析失败时推送状态给渲染进程，用户可见错误信息
+- URL 提取正则优化，支持无协议前缀的 URL（如 `bilibili.com/video/...`）
+- General 设置面板：`Max Parsing Tasks` 和 `Batch Size` 改为数字输入框
+- About 面板：添加 yt-dlp 版本号和 "View Releases" 链接
+
+### 修复
+- 修复渲染进程 JS 语法错误（commit 3601a0c 导致的空白启动问题）
+- 修复无协议前缀 URL 识别失败问题
+
+### 技术细节
+- `main.js` 修改：
+  - 添加 `yt_dlp_version` SQLite 表用于版本缓存
+  - 实现 `fetchGitHubLatestRelease()` 查询 GitHub API
+  - 修改 `getYtDlpLatestVersion()` 支持 3 个月检查间隔
+  - 实现解析和下载并发控制队列
+  - `startDownload` 改为异步执行，解析失败推送状态
+- `index-C602CO1A.js` 修改：
+  - 优化 `extractUrlsFromText` 正则表达式
+  - 添加粘贴成功通知
+  - 数字输入框样式调整
+  - About 面板添加 yt-dlp 版本和链接
+- 部署脚本：
+  - `apply.sh` 移除备份步骤（git 已有版本管理）
+  - `package.sh` 合并 snapfile 替换和 JS 补丁应用
+
+### 已知问题
+- 签名是 ad-hoc，严格签名验证会失败，但应用可正常运行
+- GitHub releases 有速率限制（60 次/小时/IP），频繁更新可能被限流
+
+---
+
+# Changelog
+
+SnapAny App 补丁修改记录
+
 ## [1.0.0] - 2026-08-07
 
 ### 新增
