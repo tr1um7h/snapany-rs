@@ -8,7 +8,10 @@ pub enum TaskError {
 
 impl TaskError {
     pub fn failed(code: &'static str, msg: impl Into<String>) -> Self {
-        Self::Failed { code, message: msg.into() }
+        Self::Failed {
+            code,
+            message: msg.into(),
+        }
     }
 }
 

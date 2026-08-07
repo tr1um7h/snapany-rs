@@ -1,4 +1,4 @@
-use md5::{Md5, Digest};
+use md5::{Digest, Md5};
 use std::path::{Path, PathBuf};
 
 /// 计算 URL 的 MD5 十六进制表示, 用于临时文件命名
@@ -63,7 +63,11 @@ pub fn sanitize_filename(name: &str) -> String {
 }
 
 /// 检查输出扩展名
-pub fn output_extension<'a>(output_type: &'a str, video_format: Option<&'a str>, audio_format: Option<&'a str>) -> &'a str {
+pub fn output_extension<'a>(
+    output_type: &'a str,
+    video_format: Option<&'a str>,
+    audio_format: Option<&'a str>,
+) -> &'a str {
     match output_type {
         "video" => video_format.unwrap_or("mp4"),
         "audio" => audio_format.unwrap_or("mp3"),

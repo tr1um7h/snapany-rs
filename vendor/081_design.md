@@ -1239,6 +1239,95 @@ yt-dlp <url> \
 
 ---
 
-**文档生成时间**: 2026-08-07  
-**分析工具**: 代码逆向 (main.js 9524 行) + 运行时日志抓取  
+**文档生成时间**: 2026-08-07
+**分析工具**: 代码逆向 (main.js 9524 行) + 运行时日志抓取
 **协议完整性**: 基于实际运行日志 + 源码分析，覆盖全部 4 个 Tab 的功能
+
+---
+
+## 12. snapfile-rs 断点续传 (2026-08-08)
+
+### 12.1 新增模块
+
+| 模块 | 职责 |
+|------|------|
+| `src/resume.rs` | 续传元数据 (`ResumeMeta`)、URL 哈希路径计算、Range 探测 (`probe_range` / `probe_with_range_get`)、TTL 清理 (`cleanup_stale_resume`) |
+
+### 12.2 续传文件结构
+
+```
+{outputDir}/.SnapAny/.resume/{url_hash}/
+├── download.partial          # 已下载的部分
+└── download.partial.meta     # 元数据 (JSON)
+```
+
+路径按 URL 的 MD5 哈希组织，跨任务共享同一 URL。独立于临时目录 `{tempDir}/{taskId}`，不受 `CleanupGuard` 影响。
+
+### 12.3 元数据格式
+
+```json
+{
+  "url": "https://...",
+  "downloaded_bytes": 52428800,
+  "total_size": 104857600,
+  "etag": "\"abc123\"",
+  "last_modified": "Wed, 08 Aug 2026 10:00:00 GMT"
+}
+```
+
+### 12.4 续传流程
+
+1. **Range 探测**：HEAD 请求获取 `Accept-Ranges`、`ETag`、`Last-Modified`、`Content-Length`。HEAD 返回 405 时回退到 `Range: bytes=0-0` GET。
+2. **检查续传**：如果 `.partial` + `.meta` 存在，验证 ETag/Last-Modified 是否匹配。
+3. **续传请求**：标识匹配且服务器支持 Range → 发送 `Range: bytes={offset}-`，追加写入 `.partial`。
+4. **从头下载**：标识不匹配或不支持 Range → 覆盖 `.partial`。
+5. **流式写入**：每秒更新 `.meta` 中的 `downloaded_bytes`，每 5 秒输出周期速度日志。
+6. **完成**：`flush` → `rename(.partial → dest)`（跨设备 fallback copy+remove）→ 删除 `.meta`。
+
+### 12.5 统计日志
+
+每个文件下载完成时输出：
+- `total_bytes`, `duration_secs`, `avg_speed_kbps`, `peak_speed_kbps`
+- `resumed_bytes`（本次续传恢复的字节）, `this_session_bytes`
+- `range_supported`, `server` (HTTP Server 头), `ttfb_ms`（首字节时间）
+
+周期日志（每 5 秒）：`speed_kbps`, `peak_kbps`, `downloaded`, `total`, `pct`
+
+这些日志用于确认 CDN 实际能力，为 P2 分片决策提供数据。
+
+### 12.6 清理逻辑
+
+- **任务完成**：`.partial` 移到最终目录，`.meta` 删除
+- **任务取消/失败**：保留 `.partial` + `.meta`（供续传）
+- **临时目录**：`CleanupGuard` 照常清理 `{tempDir}/{taskId}`，不影响 `.resume/`
+- **TTL 懒清理**：snapfile 处理新任务时，扫描 `outputDir/.SnapAny/.resume/`，删除 `.partial.meta` 修改时间超过 `--resume-max-age-days`（默认 7 天）的条目
+
+### 12.7 命令行参数
+
+```bash
+snapfile \
+  --ffmpeg-path /path/to/ffmpeg \
+  --ffprobe-path /path/to/ffprobe \
+  --max-downloading-task 5 \
+  --log-level info \
+  --resume-max-age-days 7
+```
+### 12.8 CDN 实测验证（2026-08-08）
+
+**测试对象**：bilibili CDN (`openresty` / BVC bcache)，视频 `BV1awRpBQE98`
+
+| 项目 | 结果 |
+|------|------|
+| Accept-Ranges | `bytes` (支持) |
+| 206 Partial Content | 支持，Range 请求返回 206 + `content-range` |
+| Content-Length | 多次请求稳定一致 |
+| ETag | **不返回** |
+| Last-Modified | 稳定，多次请求一致 |
+| 续传完整性 | 分段合并 MD5 = 直接下载 MD5 (通过) |
+| 单连接限速 | ~9.5-10.9 MB/s |
+| 4 连接加速 | 2.8x (31.6MB: 3.3s → 1.2s) |
+
+**关键结论**：
+- 续传验证依赖 Last-Modified（无 ETag），当前 `matches_server()` 回退逻辑已支持
+- bilibili 签名 URL 有 `deadline`（约 2h），过期后新 URL 哈希不同，旧 `.partial` 不复用，TTL 清理处理
+- CDN 确认限单连接速度，多连接分片有 2-3x 收益，已将分片升级为 P1

@@ -1,10 +1,16 @@
-use crate::protocol::{Response, ResponseData, codes, messages};
+use crate::protocol::{codes, messages, Response, ResponseData};
 use std::io::{BufWriter, Write};
 use std::sync::{Arc, Mutex};
 
 #[derive(Clone)]
 pub struct OutputWriter {
     inner: Arc<Mutex<BufWriter<std::io::Stdout>>>,
+}
+
+impl Default for OutputWriter {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl OutputWriter {
@@ -37,7 +43,8 @@ impl OutputWriter {
                     false
                 }
             }
-        }).await;
+        })
+        .await;
 
         result.unwrap_or(false)
     }
@@ -47,9 +54,12 @@ impl OutputWriter {
         tracing::debug!(task_id = task_id, code = code, "→ stdout");
         self.send(Response {
             code,
-            data: ResponseData::Status { task_id: task_id.to_string() },
+            data: ResponseData::Status {
+                task_id: task_id.to_string(),
+            },
             message: message.to_string(),
-        }).await;
+        })
+        .await;
     }
 
     /// 发送进度消息
@@ -75,7 +85,8 @@ impl OutputWriter {
                 c if c == codes::TASK_DOWNLOAD_PROGRESS => messages::DOWNLOAD_PROGRESS.to_string(),
                 _ => messages::CONVERSION_PROGRESS.to_string(),
             },
-        }).await;
+        })
+        .await;
     }
 
     /// 发送任务完成消息
@@ -87,7 +98,8 @@ impl OutputWriter {
                 files,
             },
             message: messages::TASK_COMPLETE.to_string(),
-        }).await;
+        })
+        .await;
     }
 
     /// 发送文件下载错误
@@ -99,15 +111,19 @@ impl OutputWriter {
                 url: url.to_string(),
             },
             message: messages::FILE_DOWNLOAD_ERROR.to_string(),
-        }).await;
+        })
+        .await;
     }
 
     /// 发送任务级错误
     pub async fn send_error(&self, task_id: &str, code: &'static str, message: String) {
         self.send(Response {
             code,
-            data: ResponseData::Status { task_id: task_id.to_string() },
+            data: ResponseData::Status {
+                task_id: task_id.to_string(),
+            },
             message,
-        }).await;
+        })
+        .await;
     }
 }

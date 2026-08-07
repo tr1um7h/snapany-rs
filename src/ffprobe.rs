@@ -1,6 +1,6 @@
+use crate::error::SnapfileError;
 use serde::Deserialize;
 use std::path::Path;
-use crate::error::SnapfileError;
 
 #[derive(Debug, Deserialize)]
 pub struct FfprobeOutput {
@@ -44,8 +44,10 @@ pub async fn probe(
     tracing::debug!(task_id = task_id, cmd = %cmd_str, "调用 ffprobe");
 
     let output = tokio::process::Command::new(ffprobe_path)
-        .arg("-v").arg("quiet")
-        .arg("-print_format").arg("json")
+        .arg("-v")
+        .arg("quiet")
+        .arg("-print_format")
+        .arg("json")
         .arg("-show_format")
         .arg("-show_streams")
         .arg(file)
@@ -55,7 +57,10 @@ pub async fn probe(
 
     if !output.status.success() {
         let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(SnapfileError::ConvertFailed(format!("ffprobe 失败: {}", stderr)));
+        return Err(SnapfileError::ConvertFailed(format!(
+            "ffprobe 失败: {}",
+            stderr
+        )));
     }
 
     serde_json::from_slice::<FfprobeOutput>(&output.stdout)

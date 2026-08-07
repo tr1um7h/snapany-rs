@@ -52,12 +52,14 @@ fn read_macos_system_proxy() -> Option<String> {
         return None;
     }
 
-    let host = text.lines()
+    let host = text
+        .lines()
         .find(|l| l.contains("HTTPHost :") || l.contains("HTTPSHost :"))
         .and_then(|l| l.split(':').nth(1))?
         .trim();
 
-    let port = text.lines()
+    let port = text
+        .lines()
         .find(|l| l.contains("HTTPPort :") || l.contains("HTTPSPort :"))
         .and_then(|l| l.split(':').nth(1))?
         .trim();

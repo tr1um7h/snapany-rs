@@ -1,22 +1,30 @@
-mod cli;
-mod logging;
-mod protocol;
-mod output;
-mod error;
-mod paths;
-mod proxy;
-mod downloader;
-mod ffprobe;
-mod converter;
-mod mover;
-mod task;
-mod manager;
+#![allow(
+    dead_code,
+    clippy::too_many_arguments,
+    clippy::redundant_async_block,
+    clippy::manual_is_multiple_of
+)]
 
+mod cli;
+mod converter;
+mod downloader;
+mod error;
+mod ffprobe;
+mod logging;
+mod manager;
+mod mover;
+mod output;
+mod paths;
+mod protocol;
+mod proxy;
+mod resume;
+mod task;
+
+use crate::manager::TaskManager;
+use crate::output::OutputWriter;
+use crate::protocol::Request;
 use clap::Parser;
 use tokio::io::{AsyncBufReadExt, BufReader};
-use crate::protocol::Request;
-use crate::output::OutputWriter;
-use crate::manager::TaskManager;
 
 #[tokio::main]
 async fn main() {
@@ -36,6 +44,7 @@ async fn main() {
         args.max_downloading_task,
         args.ffmpeg_path.clone(),
         args.ffprobe_path.clone(),
+        args.resume_max_age_days,
     );
 
     // stdin 读取循环
@@ -70,6 +79,7 @@ async fn main() {
 
                 match request {
                     Request::StartTask(payload) => {
+                        let payload = *payload;
                         let task_id = payload.task_id.clone();
                         let name = payload.name.clone();
                         let count = payload.files.len();

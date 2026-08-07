@@ -103,7 +103,9 @@ fn test_deserialize_unknown_type_returns_error() {
 fn test_serialize_response_status() {
     let response = Response {
         code: codes::TASK_STARTED,
-        data: ResponseData::Status { task_id: "test-uuid".to_string() },
+        data: ResponseData::Status {
+            task_id: "test-uuid".to_string(),
+        },
         message: messages::TASK_STARTED.to_string(),
     };
 

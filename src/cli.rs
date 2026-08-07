@@ -15,4 +15,7 @@ pub struct Args {
 
     #[arg(long = "log-level", default_value = "info")]
     pub log_level: String,
+
+    #[arg(long = "resume-max-age-days", default_value_t = 7)]
+    pub resume_max_age_days: u64,
 }

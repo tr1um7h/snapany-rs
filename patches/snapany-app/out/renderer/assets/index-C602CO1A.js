@@ -50819,12 +50819,12 @@ const DownloadPage = () => {
       const text = await navigator.clipboard.readText();
       const links = extractUrlsFromText(text);
       if (links.length > 0) {
-        if (links.length === 1) {
-          await handleDownload(links[0]);
-        } else {
-          const selectedLinks = links.slice(0, 10);
-          setMultipleLinks(selectedLinks);
+        // [PATCH] batch download directly, no selection modal
+        if (links.length > 50) {
+          Notice.warning("Too many URLs (" + links.length + "), only the first 50 will be processed");
         }
+        const selectedLinks = links.slice(0, 50);
+        await handleDownload(selectedLinks);
         downloadVirtuosoRef.current?.scrollToIndex({
           index: 0,
           align: "start",
@@ -50864,16 +50864,8 @@ const DownloadPage = () => {
       /* @__PURE__ */ jsxRuntimeExports.jsx(DownloadConfigDropdownGroup, {})
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("article", { className: "h-full flex flex-col overflow-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx(DownloadVirtuoso$1, { ref: downloadVirtuosoRef }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(ReomveAllModal, {}),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      MultipleLinksModal,
-      {
-        links: multipleLinks,
-        open: multipleLinks.length > 0,
-        onCancel: () => setMultipleLinks([]),
-        onOk: handleMultipleDownload
-      }
-    )
+    /* @__PURE__ */ jsxRuntimeExports.jsx(ReomveAllModal, {})
+    // [PATCH] MultipleLinksModal removed - batch download directly
   ] });
 };
 const VIDEO_OUTPUT_FORMATS = [

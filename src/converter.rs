@@ -24,8 +24,7 @@ pub async fn merge_video_audio(
         cmd.arg("-i").arg(f);
     }
 
-    cmd.arg("-progress").arg("pipe:1")
-       .arg("-map").arg("0:v:0");
+    cmd.arg("-progress").arg("pipe:1").arg("-map").arg("0:v:0");
 
     if files.len() > 1 {
         cmd.arg("-map").arg("1:a:0");
@@ -36,8 +35,12 @@ pub async fn merge_video_audio(
             cmd.arg("-c:v").arg("copy").arg("-c:a").arg("copy");
         }
         _ => {
-            cmd.arg("-movflags").arg("+faststart")
-               .arg("-c:v").arg("copy").arg("-c:a").arg("copy");
+            cmd.arg("-movflags")
+                .arg("+faststart")
+                .arg("-c:v")
+                .arg("copy")
+                .arg("-c:a")
+                .arg("copy");
         }
     }
 
@@ -63,9 +66,12 @@ pub async fn transcode_audio(
 ) -> Result<(), SnapfileError> {
     let mut cmd = Command::new(ffmpeg_path);
 
-    cmd.arg("-i").arg(input)
-       .arg("-progress").arg("pipe:1")
-       .arg("-map").arg("0:a:0");
+    cmd.arg("-i")
+        .arg(input)
+        .arg("-progress")
+        .arg("pipe:1")
+        .arg("-map")
+        .arg("0:a:0");
 
     match audio_format {
         "mp3" => {
@@ -109,9 +115,9 @@ async fn run_ffmpeg_with_progress(
 ) -> Result<(), SnapfileError> {
     cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
 
-    let mut child = cmd.spawn().map_err(|e| {
-        SnapfileError::ConvertFailed(format!("ffmpeg 启动失败: {}", e))
-    })?;
+    let mut child = cmd
+        .spawn()
+        .map_err(|e| SnapfileError::ConvertFailed(format!("ffmpeg 启动失败: {}", e)))?;
 
     let stdout = child.stdout.take().unwrap();
     let mut reader = BufReader::new(stdout);
@@ -156,9 +162,10 @@ async fn run_ffmpeg_with_progress(
         }
     }
 
-    let status = child.wait().await.map_err(|e| {
-        SnapfileError::ConvertFailed(format!("ffmpeg wait 失败: {}", e))
-    })?;
+    let status = child
+        .wait()
+        .await
+        .map_err(|e| SnapfileError::ConvertFailed(format!("ffmpeg wait 失败: {}", e)))?;
 
     if !status.success() {
         // 读取 stderr 获取错误信息
@@ -169,14 +176,18 @@ async fn run_ffmpeg_with_progress(
             while reader.read_line(&mut err_line).await.unwrap_or(0) > 0 {
                 err_output.push_str(&err_line);
                 err_line.clear();
-                if err_output.len() > 2000 { break; }
+                if err_output.len() > 2000 {
+                    break;
+                }
             }
             err_output
         } else {
             String::new()
         };
         return Err(SnapfileError::ConvertFailed(format!(
-            "ffmpeg 退出码: {:?}, stderr: {}", status.code(), stderr
+            "ffmpeg 退出码: {:?}, stderr: {}",
+            status.code(),
+            stderr
         )));
     }
 

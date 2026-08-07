@@ -17,10 +17,14 @@ fn test_binary_starts_and_exits() {
 
     let mut child = Command::new(&binary)
         .args([
-            "--ffmpeg-path", "/usr/bin/true",
-            "--ffprobe-path", "/usr/bin/true",
-            "--max-downloading-task", "1",
-            "--log-level", "error",
+            "--ffmpeg-path",
+            "/usr/bin/true",
+            "--ffprobe-path",
+            "/usr/bin/true",
+            "--max-downloading-task",
+            "1",
+            "--log-level",
+            "error",
         ])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -42,10 +46,14 @@ fn test_delete_nonexistent_task() {
     let binary = snapfile_binary();
     let mut child = Command::new(&binary)
         .args([
-            "--ffmpeg-path", "/usr/bin/true",
-            "--ffprobe-path", "/usr/bin/true",
-            "--max-downloading-task", "1",
-            "--log-level", "error",
+            "--ffmpeg-path",
+            "/usr/bin/true",
+            "--ffprobe-path",
+            "/usr/bin/true",
+            "--max-downloading-task",
+            "1",
+            "--log-level",
+            "error",
         ])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -54,7 +62,11 @@ fn test_delete_nonexistent_task() {
         .expect("failed to start snapfile");
 
     let stdin = child.stdin.as_mut().unwrap();
-    writeln!(stdin, r#"{{"type":"delete-task","payload":{{"taskIDs":["nonexistent"]}}}}"#).unwrap();
+    writeln!(
+        stdin,
+        r#"{{"type":"delete-task","payload":{{"taskIDs":["nonexistent"]}}}}"#
+    )
+    .unwrap();
     drop(child.stdin.take());
 
     let stdout = child.stdout.take().unwrap();
@@ -64,7 +76,10 @@ fn test_delete_nonexistent_task() {
     let status = child.wait().expect("failed to wait");
 
     // Deleting non-existent task produces no output (matches Go snapfile behavior)
-    assert!(lines.is_empty(), "should not produce output for non-existent task");
+    assert!(
+        lines.is_empty(),
+        "should not produce output for non-existent task"
+    );
     assert!(status.success(), "binary should exit cleanly");
 }
 
@@ -74,10 +89,14 @@ fn test_invalid_json_handling() {
     let binary = snapfile_binary();
     let mut child = Command::new(&binary)
         .args([
-            "--ffmpeg-path", "/usr/bin/true",
-            "--ffprobe-path", "/usr/bin/true",
-            "--max-downloading-task", "1",
-            "--log-level", "error",
+            "--ffmpeg-path",
+            "/usr/bin/true",
+            "--ffprobe-path",
+            "/usr/bin/true",
+            "--max-downloading-task",
+            "1",
+            "--log-level",
+            "error",
         ])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -87,7 +106,11 @@ fn test_invalid_json_handling() {
 
     let stdin = child.stdin.as_mut().unwrap();
     writeln!(stdin, "this is not json").unwrap();
-    writeln!(stdin, r#"{{"type":"delete-task","payload":{{"taskIDs":["test"]}}}}"#).unwrap();
+    writeln!(
+        stdin,
+        r#"{{"type":"delete-task","payload":{{"taskIDs":["test"]}}}}"#
+    )
+    .unwrap();
     drop(child.stdin.take());
 
     let stdout = child.stdout.take().unwrap();
@@ -108,10 +131,14 @@ fn test_update_max_download_task() {
     let binary = snapfile_binary();
     let mut child = Command::new(&binary)
         .args([
-            "--ffmpeg-path", "/usr/bin/true",
-            "--ffprobe-path", "/usr/bin/true",
-            "--max-downloading-task", "1",
-            "--log-level", "error",
+            "--ffmpeg-path",
+            "/usr/bin/true",
+            "--ffprobe-path",
+            "/usr/bin/true",
+            "--max-downloading-task",
+            "1",
+            "--log-level",
+            "error",
         ])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -120,7 +147,11 @@ fn test_update_max_download_task() {
         .expect("failed to start snapfile");
 
     let stdin = child.stdin.as_mut().unwrap();
-    writeln!(stdin, r#"{{"type":"update-max-download-task","payload":{{"limit":8}}}}"#).unwrap();
+    writeln!(
+        stdin,
+        r#"{{"type":"update-max-download-task","payload":{{"limit":8}}}}"#
+    )
+    .unwrap();
     drop(child.stdin.take());
 
     let stdout = child.stdout.take().unwrap();

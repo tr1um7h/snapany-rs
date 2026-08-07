@@ -9,9 +9,13 @@ pub async fn move_to_output(
     ext: &str,
 ) -> Result<PathBuf, SnapfileError> {
     if let Some(parent) = output_dir.parent() {
-        tokio::fs::create_dir_all(parent).await.map_err(SnapfileError::Io)?;
+        tokio::fs::create_dir_all(parent)
+            .await
+            .map_err(SnapfileError::Io)?;
     }
-    tokio::fs::create_dir_all(output_dir).await.map_err(SnapfileError::Io)?;
+    tokio::fs::create_dir_all(output_dir)
+        .await
+        .map_err(SnapfileError::Io)?;
 
     let safe_name = crate::paths::sanitize_filename(name);
     let base_path = output_dir.join(format!("{}.{}", safe_name, ext));
@@ -24,8 +28,12 @@ pub async fn move_to_output(
         Ok(()) => Ok(final_dest),
         Err(_) => {
             tracing::debug!("rename 失败, 尝试 copy + delete");
-            tokio::fs::copy(source, &final_dest).await.map_err(SnapfileError::Io)?;
-            tokio::fs::remove_file(source).await.map_err(SnapfileError::Io)?;
+            tokio::fs::copy(source, &final_dest)
+                .await
+                .map_err(SnapfileError::Io)?;
+            tokio::fs::remove_file(source)
+                .await
+                .map_err(SnapfileError::Io)?;
             Ok(final_dest)
         }
     }
@@ -57,7 +65,10 @@ async fn resolve_conflict(path: &Path) -> Result<PathBuf, SnapfileError> {
         }
     }
 
-    Err(SnapfileError::MoveFailed(format!("无法解析文件冲突: {}", path.display())))
+    Err(SnapfileError::MoveFailed(format!(
+        "无法解析文件冲突: {}",
+        path.display()
+    )))
 }
 
 /// 清理临时目录 (best effort)
