@@ -6516,73 +6516,80 @@ const taskRoute = {
     const batchSize = setting.batchSize || 5;
     console.log("批量下载并发控制", { maxParsingTasks, batchSize, taskCount: taskList.length });
 
-    // 解析并发控制
-    const parseQueue = [...taskList];
-    const parseResults = new Map();
-    const activeParses = new Set();
+    // 获取 handlers 用于推送状态
+    const handlers = main.getRendererHandlers(getMainWindowOrCreate().webContents);
 
-    const parseNext = async () => {
-      if (parseQueue.length === 0) return;
-      const task2 = parseQueue.shift();
-      activeParses.add(task2.id);
-      try {
-        const ytdlpResp = await taskService.parseTask(task2);
-        if (ytdlpResp) {
-          const downloadItems = await taskService.getNeedDownloadItems(task2, ytdlpResp, setting);
-          parseResults.set(task2.id, { task: task2, items: downloadItems });
+    // 异步执行解析和下载，不阻塞返回
+    (async () => {
+      // 解析并发控制
+      const parseQueue = [...taskList];
+      const parseResults = new Map();
+      const activeParses = new Set();
+
+      const parseNext = async () => {
+        if (parseQueue.length === 0) return;
+        const task2 = parseQueue.shift();
+        activeParses.add(task2.id);
+        try {
+          const ytdlpResp = await taskService.parseTask(task2);
+          if (ytdlpResp) {
+            const downloadItems = await taskService.getNeedDownloadItems(task2, ytdlpResp, setting);
+            parseResults.set(task2.id, { task: task2, items: downloadItems });
+          }
+        } catch (error) {
+          console.error("解析任务失败", { taskId: task2.id, error: error.message });
+          // 推送失败状态给渲染进程
+          handlers.onDownloadProgress.send({
+            taskId: task2.id,
+            taskStatus: "failed",
+            errorMessage: error.message
+          });
+        } finally {
+          activeParses.delete(task2.id);
+          if (parseQueue.length > 0 && activeParses.size < maxParsingTasks) {
+            parseNext();
+          }
         }
-      } catch (error) {
-        console.error("解析任务失败", { taskId: task2.id, error: error.message });
-      } finally {
-        activeParses.delete(task2.id);
-        // 继续解析下一个
-        if (parseQueue.length > 0 && activeParses.size < maxParsingTasks) {
-          parseNext();
-        }
+      };
+
+      const initialParses = Math.min(maxParsingTasks, taskList.length);
+      for (let i = 0; i < initialParses; i++) {
+        parseNext();
       }
-    };
 
-    // 启动初始解析任务
-    const initialParses = Math.min(maxParsingTasks, taskList.length);
-    for (let i = 0; i < initialParses; i++) {
-      parseNext();
-    }
-
-    // 等待所有解析完成
-    while (activeParses.size > 0 || parseQueue.length > 0) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-
-    // 下载并发控制
-    const downloadQueue = Array.from(parseResults.values());
-    const activeDownloads = new Set();
-
-    const downloadNext = async () => {
-      if (downloadQueue.length === 0) return;
-      const { task: task2, items: downloadItems } = downloadQueue.shift();
-      activeDownloads.add(task2.id);
-      try {
-        await taskService.downloadWithSnapfile(task2.id, downloadItems, setting);
-      } catch (error) {
-        console.error("下载任务失败", { taskId: task2.id, error: error.message });
-      } finally {
-        activeDownloads.delete(task2.id);
-        // 继续下载下一个
-        if (downloadQueue.length > 0 && activeDownloads.size < batchSize) {
-          downloadNext();
-        }
+      while (activeParses.size > 0 || parseQueue.length > 0) {
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
-    };
 
-    // 启动初始下载任务
-    const initialDownloads = Math.min(batchSize, downloadQueue.length);
-    for (let i = 0; i < initialDownloads; i++) {
-      downloadNext();
-    }
+      // 下载并发控制
+      const downloadQueue = Array.from(parseResults.values());
+      const activeDownloads = new Set();
 
+      const downloadNext = async () => {
+        if (downloadQueue.length === 0) return;
+        const { task: task2, items: downloadItems } = downloadQueue.shift();
+        activeDownloads.add(task2.id);
+        try {
+          await taskService.downloadWithSnapfile(task2.id, downloadItems, setting);
+        } catch (error) {
+          console.error("下载任务失败", { taskId: task2.id, error: error.message });
+        } finally {
+          activeDownloads.delete(task2.id);
+          if (downloadQueue.length > 0 && activeDownloads.size < batchSize) {
+            downloadNext();
+          }
+        }
+      };
+
+      const initialDownloads = Math.min(batchSize, downloadQueue.length);
+      for (let i = 0; i < initialDownloads; i++) {
+        downloadNext();
+      }
+    })();
+
+    // 立即返回任务列表，UI 立刻更新
     return taskList;
   }),
-  // 恢复任务下载
   resumeDownload: t.procedure.input().action(async ({ input }) => {
     const { taskId } = input;
     const handlers = main.getRendererHandlers(getMainWindowOrCreate().webContents);
