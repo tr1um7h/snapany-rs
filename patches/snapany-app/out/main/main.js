@@ -9496,36 +9496,9 @@ function initTipc() {
     routeCount: Object.keys(router).length
   });
 }
-function observeSnapAnyApiRequests() {
-  const filter = { urls: ["https://api.snapany.com/desktop/*"] };
-  const session = electron.session.defaultSession;
-  session.webRequest.onBeforeRequest(filter, (details, callback) => {
-    logInfo("SnapAny API request", {
-      method: details.method,
-      url: details.url
-    });
-    callback({ cancel: false });
-  });
-  session.webRequest.onCompleted(filter, (details) => {
-    logInfo("SnapAny API response", {
-      method: details.method,
-      url: details.url,
-      statusCode: details.statusCode,
-      statusLine: details.statusLine
-    });
-  });
-  session.webRequest.onErrorOccurred(filter, (details) => {
-    logError("SnapAny API error", {
-      method: details.method,
-      url: details.url,
-      error: details.error
-    });
-  });
-}
 async function initializeLibs() {
   initLogger();
   if (!electron.app.isReady()) {
-    observeSnapAnyApiRequests();
     await Promise.all([
       // [PATCH] telemetry disabled
       // initSentry(),
