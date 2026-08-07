@@ -33754,6 +33754,12 @@ function SettingAboutPanel() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "space-x-3 text-sm text-gray-900", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: t2("settings.componentVersion") }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: componentData?.version })
+        ,
+        /* @__PURE__ */ jsxRuntimeExports.jsx("a", {
+          onClick: () => client$1.openExternalLink({ url: "https://github.com/yt-dlp/yt-dlp/releases" }),
+          className: "cursor-pointer text-blue-600 hover:underline",
+          children: "View Releases"
+        })
       ] }),
       componentData?.status === "updating" && /* @__PURE__ */ jsxRuntimeExports.jsx(
         Button,
@@ -41224,32 +41230,30 @@ function SettingGeneralPanel() {
           onChange: () => patchSetting({ embedSubtitle: !settings2?.embedSubtitle })
         }
       )
-    ] })
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-y-2 py-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { htmlFor: "settingMaxParsingTasks", children: "Max Parsing Tasks" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Select,
-        {
-          id: "settingMaxParsingTasks",
-          required: true,
-          defaultValue: settings2?.maxParsingTasks || 3,
-          onChange: (e) => patchSetting({ maxParsingTasks: parseInt(e.target.value) }),
-          children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: n, children: n }, n))
-        }
-      )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-y-2 py-4", children: [
+   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { htmlFor: "settingMaxParsingTasks", children: "Max Parsing Tasks" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("input", {
+        type: "number",
+        id: "settingMaxParsingTasks",
+        min: 1,
+        max: 10,
+        defaultValue: settings2?.maxParsingTasks || 3,
+        className: "w-11 px-1.5 py-0.5 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500",
+        onChange: (e) => { const v = parseInt(e.target.value); if (v >= 1 && v <= 10) patchSetting({ maxParsingTasks: v }); }
+      })
+   ] }),
+   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mt-2", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { htmlFor: "settingBatchSize", children: "Batch Size" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Select,
-        {
-          id: "settingBatchSize",
-          required: true,
-          defaultValue: settings2?.batchSize || 5,
-          onChange: (e) => patchSetting({ batchSize: parseInt(e.target.value) }),
-          children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: n, children: n }, n))
-        }
-      )
+      /* @__PURE__ */ jsxRuntimeExports.jsx("input", {
+        type: "number",
+        id: "settingBatchSize",
+        min: 1,
+        max: 10,
+        defaultValue: settings2?.batchSize || 5,
+        className: "w-11 px-1.5 py-0.5 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500",
+        onChange: (e) => { const v = parseInt(e.target.value); if (v >= 1 && v <= 10) patchSetting({ batchSize: v }); }
+      })
     ] })
   ] });
 }
@@ -50345,7 +50349,7 @@ function requireTldjs() {
 }
 requireTldjs();
 function extractUrlsFromText(text) {
-  const regex = /(https?:\/\/|www\.)[^\s\u4E00-\u9FA5，。！？、；："'（）【】《》,]+(?<!\/)/g;
+  const regex = /(?:https?:\/\/)?(?:www\.)?[-\w@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}[-\w()@:%+.~#?&/=]*/g;
   const matches2 = text.match(regex) || [];
   const uniqueUrls = /* @__PURE__ */ new Set();
   matches2.forEach((url) => {
@@ -50846,6 +50850,7 @@ const DownloadPage = () => {
       const links = extractUrlsFromText(text);
       if (links.length > 0) {
         // [PATCH] batch download directly, no selection modal
+        Notice.success("Pasted " + links.length + " URL(s)");
         if (links.length > 50) {
           Notice.warning("Too many URLs (" + links.length + "), only the first 50 will be processed");
         }

@@ -16,35 +16,22 @@ echo "=========================================="
 echo " SnapAny App Patch Apply"
 echo "=========================================="
 
-# 1. 检查 app 是否存在
 if [ ! -d "$APP_PATH" ]; then
     echo "[ERROR] App not found: $APP_PATH"
     exit 1
 fi
 
-# 2. 停止 SnapAny
-echo "[1/5] Stopping SnapAny..."
+echo "[1/3] Stopping SnapAny..."
 killall SnapAny 2>/dev/null || true
 sleep 1
 
-# 3. 备份原文件
-echo "[2/5] Backing up original files..."
-cp "$MAIN_JS" "$MAIN_JS.bak" 2>/dev/null || true
-cp "$RENDERER_JS" "$RENDERER_JS.bak" 2>/dev/null || true
-
-# 4. 应用补丁
-echo "[3/5] Applying patches..."
+echo "[2/3] Applying patches..."
 cp "$SCRIPT_DIR/out/main/main.js" "$MAIN_JS"
 cp "$SCRIPT_DIR/out/renderer/assets/index-C602CO1A.js" "$RENDERER_JS"
 cp "$SCRIPT_DIR/ytdlp-release.json" "$YT_DLP_CONFIG"
 
-# 5. 重新签名
-echo "[4/5] Re-signing app (without --deep)..."
+echo "[3/3] Re-signing app..."
 codesign --force --sign - "$APP_PATH"
-
-# 6. 验证
-echo "[5/5] Verifying..."
-codesign --verify --strict "$APP_PATH" 2>&1 && echo "  Signature OK" || echo "  [WARN] Signature verify failed"
 
 echo ""
 echo "=========================================="
