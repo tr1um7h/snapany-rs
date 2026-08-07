@@ -41225,6 +41225,32 @@ function SettingGeneralPanel() {
         }
       )
     ] })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-y-2 py-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { htmlFor: "settingMaxParsingTasks", children: "Max Parsing Tasks" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Select,
+        {
+          id: "settingMaxParsingTasks",
+          required: true,
+          defaultValue: settings2?.maxParsingTasks || 3,
+          onChange: (e) => patchSetting({ maxParsingTasks: parseInt(e.target.value) }),
+          children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: n, children: n }, n))
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-y-2 py-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Label, { htmlFor: "settingBatchSize", children: "Batch Size" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Select,
+        {
+          id: "settingBatchSize",
+          required: true,
+          defaultValue: settings2?.batchSize || 5,
+          onChange: (e) => patchSetting({ batchSize: parseInt(e.target.value) }),
+          children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: n, children: n }, n))
+        }
+      )
+    ] })
   ] });
 }
 var PROXY_TYPE_ENUM = /* @__PURE__ */ ((PROXY_TYPE_ENUM2) => {

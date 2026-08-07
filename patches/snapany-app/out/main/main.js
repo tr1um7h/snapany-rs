@@ -115,6 +115,8 @@ const settingStore = new Store({
     subtitles: [],
     audioTracks: [],
     maxConcurrentDownloads: 8,
+    maxParsingTasks: 3,
+    batchSize: 5,
     createSubfolder: false,
     addIndexToFile: false,
     embedSubtitle: true,
@@ -2009,6 +2011,15 @@ const task = sqliteCore.sqliteTable("task", {
   updatedAt: sqliteCore.integer("updated_at").notNull()
   // 任务更新时间
 });
+// [PATCH] yt-dlp 版本缓存表
+const ytDlpVersion = sqliteCore.sqliteTable("yt_dlp_version", {
+  id: sqliteCore.integer("id").primaryKey(),
+  localVersion: sqliteCore.text("local_version").notNull(),
+  remoteVersion: sqliteCore.text("remote_version"),
+  downloadUrl: sqliteCore.text("download_url"),
+  lastCheckTime: sqliteCore.integer("last_check_time").notNull(),
+  createdAt: sqliteCore.integer("created_at").notNull()
+});
 async function fetch$1({
   url,
   method = "GET",
@@ -3873,13 +3884,97 @@ class YtDlpService {
     const version = await this.execute(["--version"]);
     return version.trim();
   }
+  // [PATCH] GitHub API 调用获取最新版本
+  async fetchGitHubLatestRelease() {
+    const url = "https://api.github.com/repos/yt-dlp/yt-dlp/releases/latest";
+    const response = await fetch$1({ url, timeout: 15000 });
+    if (response.statusCode !== 200) {
+      throw new Error(`GitHub API 返回 ${response.statusCode}`);
+    }
+    const chunks = [];
+    for await (const chunk of response) {
+      chunks.push(chunk);
+    }
+    const data = JSON.parse(Buffer.concat(chunks).toString());
+    const version = data.tag_name;
+    const macAsset = data.assets.find(a => a.name === "yt-dlp_macos");
+    const winAsset = data.assets.find(a => a.name === "yt-dlp.exe");
+    return {
+      version,
+      downloadUrls: {
+        macOS: macAsset ? macAsset.browser_download_url : "",
+        windows: winAsset ? winAsset.browser_download_url : ""
+      }
+    };
+  }
+  // [PATCH] 获取缓存的版本记录
+  getCachedVersion() {
+    try {
+      const record = sqlite.prepare("SELECT * FROM yt_dlp_version WHERE id = 1").get();
+      return record || null;
+    } catch {
+      return null;
+    }
+  }
+  // [PATCH] 更新缓存的版本记录
+  upsertCachedVersion(localVersion, remoteVersion, downloadUrl, lastCheckTime) {
+    try {
+      const now = Math.floor(Date.now() / 1000);
+      sqlite.prepare(`
+        INSERT INTO yt_dlp_version (id, local_version, remote_version, download_url, last_check_time, created_at)
+        VALUES (1, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET
+          local_version = excluded.local_version,
+          remote_version = excluded.remote_version,
+          download_url = excluded.download_url,
+          last_check_time = excluded.last_check_time
+      `).run(localVersion, remoteVersion, downloadUrl, lastCheckTime, now);
+    } catch (error) {
+      console.error("更新 yt-dlp 版本缓存失败:", error);
+    }
+  }
   /**
    * 获取最新版本
    * @returns 最新版本
    */
   async getYtDlpLatestVersion() {
-    const softwareInfo = await getSoftwareInfo();
-    return softwareInfo.ytdlpLatestRelease.version;
+    // [PATCH] 实现 3 个月检查间隔 + GitHub API + 缓存策略
+    const CHECK_INTERVAL_SECS = 90 * 24 * 3600; // 3 个月
+    const now = Math.floor(Date.now() / 1000);
+    const localVersion = await this.getYtDlpLocalVersion();
+    const cached = this.getCachedVersion();
+
+    // 1. 未超过 3 个月，使用缓存的远程版本
+    if (cached && (now - cached.lastCheckTime) < CHECK_INTERVAL_SECS) {
+      console.log("yt-dlp: 使用缓存版本", { remote: cached.remoteVersion, lastCheck: cached.lastCheckTime });
+      return cached.remoteVersion || localVersion;
+    }
+
+    // 2. 超过 3 个月或首次检查，请求 GitHub API
+    try {
+      console.log("yt-dlp: 请求 GitHub API 检查更新");
+      const release = await this.fetchGitHubLatestRelease();
+      const platform = process.platform;
+      const downloadUrl = platform === "win32" ? release.downloadUrls.windows : release.downloadUrls.macOS;
+
+      // 更新缓存
+      this.upsertCachedVersion(localVersion, release.version, downloadUrl, now);
+      console.log("yt-dlp: 更新缓存成功", { version: release.version });
+
+      return release.version;
+    } catch (error) {
+      console.error("yt-dlp: GitHub API 请求失败", { error: error.message });
+
+      // 3. 尝试使用缓存
+      if (cached && cached.remoteVersion) {
+        console.log("yt-dlp: 使用缓存版本（API 失败）", { remote: cached.remoteVersion });
+        return cached.remoteVersion;
+      }
+
+      // 4. 首次检查就失败，返回本地版本
+      console.warn("yt-dlp: 首次检查失败，使用本地版本");
+      return localVersion;
+    }
   }
 }
 const YtDlpService$1 = new YtDlpService();
@@ -6416,17 +6511,75 @@ const taskRoute = {
     });
     const taskList = await taskService.saveTaskByUrls(input.urls);
     const setting = settingStore.store;
-    for (const task2 of taskList) {
-      const asyncTasks = async () => {
+    // [PATCH] 使用 maxParsingTasks 和 batchSize 控制并发
+    const maxParsingTasks = setting.maxParsingTasks || 3;
+    const batchSize = setting.batchSize || 5;
+    console.log("批量下载并发控制", { maxParsingTasks, batchSize, taskCount: taskList.length });
+
+    // 解析并发控制
+    const parseQueue = [...taskList];
+    const parseResults = new Map();
+    const activeParses = new Set();
+
+    const parseNext = async () => {
+      if (parseQueue.length === 0) return;
+      const task2 = parseQueue.shift();
+      activeParses.add(task2.id);
+      try {
         const ytdlpResp = await taskService.parseTask(task2);
-        if (!ytdlpResp) {
-          return;
+        if (ytdlpResp) {
+          const downloadItems = await taskService.getNeedDownloadItems(task2, ytdlpResp, setting);
+          parseResults.set(task2.id, { task: task2, items: downloadItems });
         }
-        const downloadItems = await taskService.getNeedDownloadItems(task2, ytdlpResp, setting);
-        taskService.downloadWithSnapfile(task2.id, downloadItems, setting);
-      };
-      asyncTasks();
+      } catch (error) {
+        console.error("解析任务失败", { taskId: task2.id, error: error.message });
+      } finally {
+        activeParses.delete(task2.id);
+        // 继续解析下一个
+        if (parseQueue.length > 0 && activeParses.size < maxParsingTasks) {
+          parseNext();
+        }
+      }
+    };
+
+    // 启动初始解析任务
+    const initialParses = Math.min(maxParsingTasks, taskList.length);
+    for (let i = 0; i < initialParses; i++) {
+      parseNext();
     }
+
+    // 等待所有解析完成
+    while (activeParses.size > 0 || parseQueue.length > 0) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    // 下载并发控制
+    const downloadQueue = Array.from(parseResults.values());
+    const activeDownloads = new Set();
+
+    const downloadNext = async () => {
+      if (downloadQueue.length === 0) return;
+      const { task: task2, items: downloadItems } = downloadQueue.shift();
+      activeDownloads.add(task2.id);
+      try {
+        await taskService.downloadWithSnapfile(task2.id, downloadItems, setting);
+      } catch (error) {
+        console.error("下载任务失败", { taskId: task2.id, error: error.message });
+      } finally {
+        activeDownloads.delete(task2.id);
+        // 继续下载下一个
+        if (downloadQueue.length > 0 && activeDownloads.size < batchSize) {
+          downloadNext();
+        }
+      }
+    };
+
+    // 启动初始下载任务
+    const initialDownloads = Math.min(batchSize, downloadQueue.length);
+    for (let i = 0; i < initialDownloads; i++) {
+      downloadNext();
+    }
+
     return taskList;
   }),
   // 恢复任务下载
