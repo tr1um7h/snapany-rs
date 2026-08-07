@@ -39,12 +39,12 @@ cp "$SCRIPT_DIR/out/renderer/assets/index-C602CO1A.js" "$RENDERER_JS"
 cp "$SCRIPT_DIR/ytdlp-release.json" "$YT_DLP_CONFIG"
 
 # 5. 重新签名
-echo "[4/5] Re-signing app..."
-codesign --force --deep --sign - "$APP_PATH"
+echo "[4/5] Re-signing app (without --deep)..."
+codesign --force --sign - "$APP_PATH"
 
 # 6. 验证
 echo "[5/5] Verifying..."
-codesign --verify --deep --strict "$APP_PATH" 2>&1 && echo "  Signature OK" || echo "  [WARN] Signature verify failed"
+codesign --verify --strict "$APP_PATH" 2>&1 && echo "  Signature OK" || echo "  [WARN] Signature verify failed"
 
 echo ""
 echo "=========================================="
