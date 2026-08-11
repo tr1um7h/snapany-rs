@@ -119,8 +119,9 @@ const settingStore = new Store({
     batchSize: 5,
     createSubfolder: false,
     addIndexToFile: false,
-    embedSubtitle: true,
-    proxy: {
+   embedSubtitle: true,
+   useGoSnapfile: false,
+   proxy: {
       type: "system"
     },
     isDownloadThumbnail: false,
@@ -1416,11 +1417,12 @@ class SnapfileService extends node_events.EventEmitter {
   pendingTasks = [];
   // 标记是否正在主动关闭服务（用于禁用自动重启）
   isShuttingDown = false;
-  constructor(options) {
-    super();
-    this.executablePath = getBinPath("snapfile");
-    this.maxDownloadingTasks = options?.maxDownloadingTasks || 5;
-  }
+ constructor(options) {
+   super();
+   const useGo = settingStore.get("useGoSnapfile");
+   this.executablePath = getBinPath(useGo ? "snapfile-go" : "snapfile");
+   this.maxDownloadingTasks = options?.maxDownloadingTasks || 5;
+ }
   /**
    * 检查snapfile可执行文件是否存在
    */
@@ -2027,29 +2029,51 @@ async function fetch$1({
   headers = {},
   abortController = new AbortController()
 }) {
-  return await new Promise(
-    (resolve, reject) => {
-      const request = electron.net.request({
-        method,
-        url,
-        headers,
-        session: electron.session.defaultSession,
-        referrerPolicy: "unsafe-url"
-      });
-      if (abortController.signal.aborted) {
-        request.abort();
-        reject(new Error("Request aborted"));
-        return;
+  return await new Promise((resolve, reject) => {
+    const request = electron.net.request({
+      method,
+      url,
+      headers,
+      session: electron.session.defaultSession,
+      referrerPolicy: "unsafe-url"
+    });
+    let settled = false;
+    let timeoutId;
+    const cleanup = () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
-      abortController.signal.addEventListener("abort", () => {
-        request.abort();
-        reject(new Error("Request aborted"));
-      }, { once: true });
-      request.on("response", resolve);
-      request.on("error", reject);
-      request.end();
+    };
+    const fail = (error) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      reject(error);
+    };
+    timeoutId = setTimeout(() => {
+      request.abort();
+      fail(new Error(`Request timed out after ${timeout}ms`));
+    }, timeout);
+    if (abortController.signal.aborted) {
+      request.abort();
+      fail(new Error("Request aborted"));
+      return;
     }
-  );
+    abortController.signal.addEventListener("abort", () => {
+      request.abort();
+      fail(new Error("Request aborted"));
+    }, { once: true });
+    request.on("response", (response) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve(response);
+    });
+    request.on("error", (error) => {
+      fail(error);
+    });
+    request.end();
+  });
 }
 class FFmpegService {
   ffmpegProcesses = /* @__PURE__ */ new Map();
@@ -3978,6 +4002,14 @@ class YtDlpService {
   }
 }
 const YtDlpService$1 = new YtDlpService();
+
+async function getLocalFFmpegVersion() {
+  const ffmpegPath = getBinPath("ffmpeg");
+  const version = await execAsync(`"${ffmpegPath}" -version`);
+  const match = version.stdout.match(/ffmpeg version (\S+)/);
+  return match ? match[1].trim() : "";
+}
+
 const tempTaskMap = /* @__PURE__ */ new Map();
 const tempTaskProgressMap = /* @__PURE__ */ new Map();
 class TaskService {
@@ -5363,7 +5395,8 @@ async function initSentry() {
 }
 async function initSnapfile() {
   try {
-    const snapfilePath = getBinPath("snapfile");
+    const useGo = settingStore.get("useGoSnapfile");
+    const snapfilePath = getBinPath(useGo ? "snapfile-go" : "snapfile");
     await setFilePermissions(snapfilePath);
     const exists = await checkFileExists(snapfilePath);
     if (!exists) {
@@ -5383,7 +5416,7 @@ async function initSnapfile() {
     logError("Snapfile服务启动失败", {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : void 0,
-      executablePath: getBinPath("snapfile")
+      executablePath: getBinPath(settingStore.get("useGoSnapfile") ? "snapfile-go" : "snapfile")
     });
     throw error;
   }
@@ -5451,6 +5484,18 @@ class SettingService {
   async saveSetting(setting) {
     await settingStore.set(setting);
     ProxyService$1.setupProxy();
+    if (setting.useGoSnapfile !== void 0) {
+      const useGo = settingStore.get("useGoSnapfile");
+      const newPath = getBinPath(useGo ? "snapfile-go" : "snapfile");
+      if (newPath !== snapfileService.executablePath) {
+        snapfileService.executablePath = newPath;
+        if (snapfileService.isRunning) {
+          logInfo("useGoSnapfile 变更，重启 snapfile 服务", { newPath });
+          await snapfileService.stop();
+          await snapfileService.start();
+        }
+      }
+    }
   }
 }
 const SettingService$1 = new SettingService();
@@ -6461,6 +6506,12 @@ const systemRoute = {
     // [PATCH] yt-dlp update enabled (uses ytdlp-release.json)
     ytDlpStore.set("status", "updating");
     YtDlpService$1.updateYtDlp();
+  }),
+  getLocalFFmpegVersion: t.procedure.action(async () => {
+    const version = await getLocalFFmpegVersion();
+    return {
+      version
+    };
   }),
   // 关闭窗口
   closeWindow: t.procedure.action(async () => {
@@ -9666,19 +9717,36 @@ async function initializeLibs() {
       initYtDlp(),
       initFFmpeg(),
       initDatabase(),
-      initTipc(),
-      // [PATCH] yt-dlp update check enabled (uses ytdlp-release.json)
-      YtDlpService$1.checkYtDlpUpdate(),
-      initSnapfile()
+      initTipc()
     ]);
+    await initSnapfile();
   }
 }
 logInfo("应用启动，设备ID", { deviceId });
-initializeLibs();
+const appInitPromise = initializeLibs().catch((error) => {
+  logError("应用初始化失败", {
+    error: error instanceof Error ? error.message : String(error),
+    stack: error instanceof Error ? error.stack : void 0
+  });
+});
 let mainWindow;
+const gotTheLock = electron.app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  electron.app.quit();
+} else {
+  electron.app.on("second-instance", () => {
+    const mainWindow = getMainWindow();
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
 electron.app.whenReady().then(async () => {
   await ProxyService$1.setupProxy();
   createMainWindow();
+  await appInitPromise;
+  YtDlpService$1.checkYtDlpUpdate();
 });
 electron.app.on("window-all-closed", async () => {
   if (!isMac) {

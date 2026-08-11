@@ -1331,3 +1331,147 @@ snapfile \
 - 续传验证依赖 Last-Modified（无 ETag），当前 `matches_server()` 回退逻辑已支持
 - bilibili 签名 URL 有 `deadline`（约 2h），过期后新 URL 哈希不同，旧 `.partial` 不复用，TTL 清理处理
 - CDN 确认限单连接速度，多连接分片有 2-3x 收益，已将分片升级为 P1
+
+---
+
+## 13. snapfile-go 完整能力分析（2026-08-09）
+
+基于 snapfile-go 二进制（`vendor/snapfile-go/snapfile`，Go x86_64 编译）的 strings 逆向分析。
+
+### 13.1 核心发现：snapfile-go 有完整的 HLS 处理能力
+
+snapfile-go 二进制中包含完整的 HLS（HTTP Live Streaming）协议解析符号，这是 snapfile-rs 完全缺失的能力。
+
+**HLS 协议符号（Go 二进制确认）**
+
+| 符号 | 用途 |
+|------|------|
+| `#EXT-X-VERSION` | 协议版本 |
+| `#EXT-X-STREAM-INF` | master playlist 变体选择 |
+| `#EXT-X-MEDIA` | 音频/字幕轨道描述 |
+| `#EXT-X-TARGETDURATION` | segment 最大时长 |
+| `#EXT-X-MEDIA-SEQUENCE` | segment 序号（直播增量检测） |
+| `#EXT-X-PLAYLIST-TYPE` | 区分 VOD（点播）/EVENT（直播） |
+| `#EXT-X-BYTERANGE` | segment 字节范围 |
+| `#EXT-X-KEY` | 加密 segment 的密钥 |
+| `#EXT-X-MAP` | 初始化 segment |
+| `EndList`（`#EXT-X-ENDLIST`） | 直播结束标记 |
+| `SEGMENT URL` | 分段 URL |
+| `can not find any TS segment` | 无 segment 错误 |
+
+### 13.2 直播录制完整链路
+
+snapfile-go 实现了完整的直播录制流水线：
+
+| 能力 | 说明 |
+|------|------|
+| `task_live_detected` | 检测到直播流时发送状态码 |
+| `live_cancel_sweep` | 直播取消时的清理机制 |
+| `first.part_` / `p%02d.` | 分段文件命名模式 |
+| `shard` / `sharding` | 分段合并机制 |
+| `download_sem` / `convert_sem` | 下载和转换的信号量控制 |
+
+**直播录制流程**
+
+```
+snapfile-go 收到 start-task（FileSpec.url = m3u8 地址）
+  │
+  ▼
+下载 m3u8 → 解析 HLS playlist
+  ├── master playlist（含 #EXT-X-STREAM-INF）→ 选最优变体 → GET 变体 media playlist
+  └── media playlist → 直接处理
+  │
+  ▼
+检查 #EXT-X-PLAYLIST-TYPE：
+  ├── VOD → 点播，一次性下载所有 segment
+  └── EVENT 或无此标签 → 直播，进入轮询模式
+  │
+  ▼
+直播模式：
+  1. 下载当前所有 segment（TS/M4S 分片）
+  2. 记录已下载的 segment（#EXT-X-MEDIA-SEQUENCE）
+  3. 定期重新 GET m3u8 检查是否有新 segment
+  4. 有新 segment → 继续下载 + 推送进度
+  5. 无新 segment → 继续轮询等待
+  6. 发送 task_live_detected
+  │
+  ├── 用户停止（stop-recording-live 命令）：
+  │     → 停止轮询
+  │     → 已下载的 segment 进入 ffmpeg 合并
+  │     → 输出完整视频文件（截止到停止时间点）
+  │
+  └── 远程端结束直播：
+        → CDN 在 m3u8 末尾追加 #EXT-X-ENDLIST
+        → snapfile-go 轮询检测到 EndList → 自然结束
+        → 已下载的 segment 进入 ffmpeg 合并 → 输出完整视频文件（完整录制）
+```
+
+### 13.3 snapfile-go 独有功能
+
+| 功能 | snapfile-go | snapfile-rs |
+|------|------------|-------------|
+| HLS M3U8 解析 | ✅ 完整协议支持 | ❌ 完全缺失 |
+| 直播录制（轮询 + segment 管理） | ✅ | ❌ |
+| 远程结束检测（#EXT-X-ENDLIST） | ✅ | ❌ |
+| 用户停止录制后的分片合并 | ✅ | ❌（stop-recording-live 只是 cancel token） |
+| HLS segment 并行下载（download_sem） | ✅ | ❌ |
+| 分段合并（sharding/shard） | ✅ | ❌ |
+| `task_live_detected` 状态码发送 | ✅ | ❌（协议定义了但从不发送） |
+| `live_cancel_sweep` 直播取消清理 | ✅ | ❌ |
+| `param_invalid` 错误码 | ✅ | ❌ |
+| `parse_m3u8_error` 错误码发送 | ✅ | ❌（协议定义了但从不发送） |
+
+### 13.4 snapfile-rs 独有增强（Go 版没有）
+
+| 功能 | snapfile-rs | snapfile-go |
+|------|------------|-------------|
+| HTTP Range 多连接分块下载 | ✅ 自适应（1-8 连接） | ❌ |
+| `.partial` 断点续传（meta + partial） | ✅ | ❌ |
+| `resume_max_age_days` TTL 清理 | ✅ | ❌ |
+| `max_connections_per_file` 参数 | ✅ | ❌ |
+| MP3 码率控制（-b:a {bitrate}k） | ✅ | ❌ |
+| `connect_timeout_secs` / `read_timeout_secs` | ✅ | ❌ |
+| arm64 原生编译 | ✅ | ❌ 仅 x86_64 |
+
+### 13.5 能力对比矩阵
+
+| 场景 | snapfile-go | snapfile-rs | 影响 |
+|------|------------|-------------|------|
+| Bilibili 点播视频 | ✅ 直接 URL | ✅ 直接 URL + 分块加速 | snapfile-rs 更快 |
+| YouTube 点播 | ✅ 直接 URL | ✅ 直接 URL + 分块加速 | snapfile-rs 更快 |
+| 资源嗅探下载 | ✅ 直接 URL | ✅ 直接 URL + 断点续传 | snapfile-rs 更好 |
+| Bilibili 直播 | ✅ HLS 录制 | ❌ 无法录制 | **snapfile-go 独有** |
+| YouTube 直播 | ✅ HLS 录制 | ❌ 无法录制 | **snapfile-go 独有** |
+| Twitch 直播 | ✅ HLS 录制 | ❌ 无法录制 | **snapfile-go 独有** |
+| 大文件断点续传 | ❌ | ✅ | **snapfile-rs 独有** |
+
+### 13.6 协议空壳字段
+
+snapfile-rs 协议层定义了以下字段/命令，但代码层完全没有实现：
+
+| 协议定义 | snapfile-rs 状态 | snapfile-go 状态 | 说明 |
+|---------|-----------------|-----------------|------|
+| `live: bool` 字段 | 接收但不用 | ✅ 控制直播行为 | Electron 层也硬编码 false |
+| `stop-recording-live` 命令 | cancel token（等同 delete） | ✅ 停止轮询 + 合并分片 | snapfile-rs 没有分片可合并 |
+| `task_live_detected` 状态码 | 从不发送 | ✅ 检测到直播时发送 | |
+| `stop_recording_live` 状态码 | 从不发送 | ✅ 响应用户停止 | |
+| `parse_m3u8_error` 错误码 | 从不发送 | ✅ M3U8 解析失败时发送 | |
+| `param_invalid` 错误码 | 从不发送 | ✅ 参数校验失败时发送 | |
+
+### 13.7 架构差异总结
+
+```
+snapfile-go（原版）：
+  ├── HTTP 直接文件下载（单连接）
+  ├── HLS M3U8 解析 ← snapfile-rs 完全缺失
+  ├── 直播录制（轮询 + segment 管理 + ENDLIST 检测） ← snapfile-rs 完全缺失
+  ├── 分段下载与合并（download_sem + sharding） ← snapfile-rs 完全缺失
+  └── ffmpeg 转换/合并
+
+snapfile-rs（Rust 重写版）：
+  ├── HTTP 直接文件下载（单连接 + 多连接分块） ← 增强
+  ├── 断点续传（partial + meta + TTL） ← 独有增强
+  └── ffmpeg 转换/合并
+```
+
+snapfile-rs 是一个**更快的直接文件下载器，但丢掉了 snapfile-go 的 HLS/直播录制能力**。对点播场景完全兼容且性能更好，但对直播场景完全不可用。
