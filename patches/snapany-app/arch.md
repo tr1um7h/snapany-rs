@@ -32,14 +32,14 @@ SnapAny 是一个 Electron 桌面应用，采用**三进程 + 多子进程**架�
 │  │                                                        │  │
 │  │  ┌──────────────────────────────────────────────────┐  │  │
 │  │  │  IPC 层（@egoist/tipc）                           │  │  │
-│  │  │  8 个路由模块，40+ 个 procedure                   │  │  │
+│  │  │  7 个路由模块，40+ 个 procedure                   │  │  │
 │  │  │  5 个 renderer handler（事件推送）                │  │  │
 │  │  └──────────────────────────────────────────────────┘  │  │
 │  └────────────────────────────────────────────────────────┘  │
 │                                                              │
 │  ┌────────────────────────────────────────────────────────┐  │
 │  │  渲染进程（React）                                      │  │
-│  │  React 18 + React Router v6 + Vite                      │  │
+│  │  React 18 + React Router v7 + Vite                      │  │
 │  └────────────────────────────────────────────────────────┘  │
 │                                                              │
 └──────────────────────────────────────────────────────────────┘
@@ -171,7 +171,7 @@ extracting → readyDownload → downloading → pendingConversion
 
 负责与 snapfile（下载引擎）的进程生命周期管理和 stdin/stdout 通信。
 
-**注意**：生产环境使用的是 snapfile-go（Go 编译的二进制），具备完整的 HLS/直播录制能力。snapany-rs 仓库中的 snapfile-rs 是 Rust 重写版，缺失 HLS/直播录制能力。下文描述基于 snapfile-go 的完整能力。
+**注意**：当前 patches 默认使用 snapfile-rs（Rust），通过 `useGoSnapfile` 设置可切回 snapfile-go（Go 编译的二进制）。snapfile-rs 缺失 HLS/直播录制能力；snapfile-go 具备完整能力。下文描述基于 snapfile-go 的完整能力。
 
 **进程生命周期**
 
@@ -415,6 +415,7 @@ onErrorOccurred → 清理请求头 Map
 | createSubfolder | Boolean | 创建子文件夹 |
 | addIndexToFile | Boolean | 文件名添加序号 |
 | embedSubtitle | Boolean | 嵌入字幕 |
+| useGoSnapfile | Boolean | 使用原版 snapfile-go（默认 false）；任务进行中禁止切换 |
 | proxy | ProxyConfig | 代理配置 |
 | isDownloadThumbnail | Boolean | 下载缩略图 |
 | language | String | 界面语言 |
@@ -678,7 +679,7 @@ authSites 存储在 settingStore 中，支持动态增删：
 
 使用 `@egoist/tipc` 实现类型安全的双向 IPC。
 
-### 8.1 路由模块（8 个，40+ procedure）
+### 8.1 路由模块（7 个，40+ procedure）
 
 | 路由模块 | procedure 数 | 核心接口 |
 |---------|-------------|---------|
@@ -763,7 +764,7 @@ FFmpegService.startMergeConvert（如需）
   → 更新 task 状态为 completed
 ```
 
-### 9.2 直播录制流程（需要 snapfile-go）
+### 9.2 直播录制流程（需要 snapfile-go 或未来 snapfile-rs HLS）
 
 **注意**：此功能依赖 snapfile-go 的 HLS 能力。snapfile-rs（Rust 重写版）不支持。
 
@@ -786,7 +787,7 @@ snapfile-go 收到 start-task（FileSpec.url = m3u8 地址）
   → 持续推送 task_download_progress
   → 发送 task_live_detected
   │
-  ├── 结束方式 A：用户点冻“停止录制”
+  ├── 结束方式 A：用户点击“停止录制”
   │     → stopRecordingLive(taskId)
   │     → snapfile-go stdin: stop-recording-live
   │     → 停止轮询
@@ -870,7 +871,7 @@ createMainWindow() — 创建主窗口
 | 维度 | 技术 |
 |------|------|
 | UI 框架 | React 18 |
-| 路由 | React Router v6.28.1（HashRouter） |
+| 路由 | React Router v7.2.0（HashRouter） |
 | 构建工具 | Vite |
 | IPC 客户端 | @egoist/tipc/renderer |
 

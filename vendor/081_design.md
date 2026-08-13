@@ -1338,6 +1338,8 @@ snapfile \
 
 基于 snapfile-go 二进制（`vendor/snapfile-go/snapfile`，Go x86_64 编译）的 strings 逆向分析。
 
+> **当前 patches 状态**: 应用默认使用 snapfile-rs；`useGoSnapfile` 开关允许切回 snapfile-go，用于补足直播录制能力。
+
 ### 13.1 核心发现：snapfile-go 有完整的 HLS 处理能力
 
 snapfile-go 二进制中包含完整的 HLS（HTTP Live Streaming）协议解析符号，这是 snapfile-rs 完全缺失的能力。
@@ -1451,7 +1453,7 @@ snapfile-rs 协议层定义了以下字段/命令，但代码层完全没有实�
 
 | 协议定义 | snapfile-rs 状态 | snapfile-go 状态 | 说明 |
 |---------|-----------------|-----------------|------|
-| `live: bool` 字段 | 接收但不用 | ✅ 控制直播行为 | Electron 层也硬编码 false |
+| `live: bool` 字段 | 接收但不用 | ✅ 控制直播行为 | Electron 层硬编码 false，HLS 实现需同步修复 |
 | `stop-recording-live` 命令 | cancel token（等同 delete） | ✅ 停止轮询 + 合并分片 | snapfile-rs 没有分片可合并 |
 | `task_live_detected` 状态码 | 从不发送 | ✅ 检测到直播时发送 | |
 | `stop_recording_live` 状态码 | 从不发送 | ✅ 响应用户停止 | |

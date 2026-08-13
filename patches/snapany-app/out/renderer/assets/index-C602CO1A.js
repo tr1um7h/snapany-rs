@@ -33783,7 +33783,7 @@ function SettingAboutPanel() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-gray-500", children: "FFmpeg Version" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: ffmpegVersionData?.version || "" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("a", {
-          onClick: () => client$1.openExternalLink({ url: "https://github.com/eugeneware/ffmpeg-static/releases" }),
+          onClick: () => client$1.openExternalLink({ url: "https://evermeet.cx/ffmpeg/" }),
           className: "cursor-pointer text-blue-600 hover:underline",
           children: "View Releases"
         })
@@ -41184,6 +41184,7 @@ function SettingGeneralPanel() {
     [t2]
   );
   const { settings: settings2, patchSetting } = useSnapany();
+  const { downloadingTaskCount } = useTaskStore();
   const languageHandle = async (e) => {
     const selectValue = e.target.value;
     const lang = selectValue === DEFAULT_SYSTEM_VALUE ? await client$1.getSystemLanguage() : selectValue;
@@ -41204,6 +41205,17 @@ function SettingGeneralPanel() {
     const path2 = settings2?.downloadPath;
     if (path2) {
       await client$1.openFile({ filePath: path2 });
+    }
+  };
+  const handleUseGoSnapfileChange = async () => {
+    if (downloadingTaskCount > 0) {
+      Notice.info("下载中，完成后才能切换");
+      return;
+    }
+    try {
+      await patchSetting({ useGoSnapfile: !settings2?.useGoSnapfile });
+    } catch (error) {
+      Notice.info("下载中，完成后才能切换");
     }
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
@@ -41256,7 +41268,7 @@ function SettingGeneralPanel() {
          id: "settingUseGoSnapfile",
          color: "blue",
          checked: settings2?.useGoSnapfile,
-         onChange: () => patchSetting({ useGoSnapfile: !settings2?.useGoSnapfile })
+         onChange: handleUseGoSnapfileChange
        }
      )
    ] }),

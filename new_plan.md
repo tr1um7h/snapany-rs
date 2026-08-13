@@ -50,9 +50,9 @@ snapfile 作为独立进程后，Tauri 的"直接调用 Rust 函数"优势不存
 **推荐方案**：默认使用 snapfile-rs（性能更好，arm64 支持），直播录制功能作为 Phase 2 增强项，届时选择补全 snapfile-rs 的 HLS 能力或集成 snapfile-go。
 
 > **ℹ️ 备注（HLS 已在规划中）**：snapfile-rs 的 HLS 实现已有完整设计文档链路：
-> - 设计文档：`docs/superpowers/specs/2025-08-10-hls-live-recording-design.md`
-> - 实现计划：`docs/superpowers/plans/2025-08-10-hls-live-recording.md`
-> - fMP4 方案：`docs/fMP4.md`
+> - 设计文档：`docs/superpowers/specs/2026-08-10-hls-live-recording-design.md`
+> - 实现计划：`docs/superpowers/plans/2026-08-10-hls-live-recording.md`
+> - fMP4 后续方案：`docs/fMP4.md`（HLS TS→remux 落地后再评估，不纳入当前实现）
 >
 > 方案核心：把 HLS 全部委托给 ffmpeg（VOD 一步转 mp4，Live 录制 ts 再 remux），
 > `stop-recording-live` 用 LiveStopSignal 触发 ffmpeg SIGINT。
@@ -69,8 +69,7 @@ snapfile 作为独立进程后，Tauri 的"直接调用 Rust 函数"优势不存
 
 左侧 Sidebar 四个 Tab（Download / Online / Convert / Merge）+ 左下角 Settings 按钮。
 
-> **⚠️ 备注（React Router 版本）**：arch.md 记载 "React Router v6.28.1" 有误。
-> 实际 `app/package.json` 为 `react-router-dom ^7.2.0`（v7）。复刻时需按 v7 API 实现。
+> **备注（React Router 版本）**：已统一为 `app/package.json` 中的 `react-router-dom ^7.2.0`（v7）。复刻时按 v7 API 实现。
 
 ### 2.6 解析并发控制（需重新实现）
 
@@ -122,7 +121,8 @@ snapany-rs/
 │   │   │   └── stores/         # electron-store 配置
 │   │   │       ├── settingStore.ts
 │   │   │       ├── snifferStore.ts
-│   │   │       └── urlBookmarkStore.ts
+│   │   │       ├── urlBookmarkStore.ts
+│   │   │       └── ytDlpStore.ts
 │   │   ├── preload/
 │   │   │   └── index.ts        # 预加载脚本
 │   │   └── renderer/           # React 前端
@@ -191,7 +191,7 @@ snapany-rs/
 │  │  ┌──────────────────────────────────────────────────┐   │  │
 │  │  │  数据层                                           │   │  │
 │  │  │  SQLite (better-sqlite3 + drizzle-orm)           │   │  │
-│  │  │  electron-store × 3                               │   │  │
+│  │  │  electron-store × 4                               │   │  │
 │  │  └──────────────────────────────────────────────────┘   │  │
 │  │                                                          │  │
 │  │  ┌──────────────────────────────────────────────────┐   │  │
@@ -477,7 +477,7 @@ snapfile 处理
 | onResourceSniffed | `MediaResource` | webRequest |
 | onParseComplete | `{ parseId, videoInfo }` | yt-dlp stdout |
 
-> **⚠️ 备注**：对比 arch.md 第八章（8 路由 40+ procedure），以上接口遗漏:
+> **⚠️ 备注**：对比 arch.md 第八章（7 路由 40+ procedure），以上接口遗漏:
 >
 > **命令遗漏**:
 > - snifferRoute 缺 `getUrlBookmarks / addUrlBookmark / deleteUrlBookmark`（书签管理）
@@ -663,7 +663,7 @@ snapfile-rs 缺失 HLS 能力，需要以下方案：
 **预估总工期：Phase 1-5 = 9-12 天；含 Phase 6 = 12-17 天**
 
 > **⚠️ 备注（HLS 方案修正）**：Phase 6 的 "Rust M3U8 解析器" 方案已过时。
-> 实际设计（`docs/superpowers/specs/2025-08-10-hls-live-recording-design.md`）
+> 实际设计（`docs/superpowers/specs/2026-08-10-hls-live-recording-design.md`）
 > 采用 **ffmpeg 委托方案**: VOD 用 ffmpeg -i m3u8 一步转 mp4，Live 用 ffmpeg 录制 ts 再 remux，
 > 不在 Rust 中实现 M3U8 解析器。方案更简洁，但需同时修改 Electron 层（见 12.4）。
 
@@ -743,7 +743,7 @@ snapfile-rs 缺失 HLS 能力，需要以下方案：
 
 **备选架构 B：使用 snapfile-go（默认）**
 
-本文档主方案。使用 snapfile-rs（点播）或 snapfile-goｶｶ）作为独立进程。
+本文档主方案。使用 snapfile-rs（点播）或 snapfile-go（直播）作为独立进程。
 
 **架构对比**
 
@@ -799,7 +799,7 @@ yt-dlp 自更新是运维刚需: 视频站点频繁改版，yt-dlp 不更新就�
 
 **12.3 IPC 接口不完整**
 
-对比 arch.md 第八章（8 路由 40+ procedure），遗漏:
+对比 arch.md 第八章（7 路由 40+ procedure），遗漏:
 
 | 遗漏项 | 说明 |
 |--------|------|

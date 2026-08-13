@@ -4004,10 +4004,17 @@ class YtDlpService {
 const YtDlpService$1 = new YtDlpService();
 
 async function getLocalFFmpegVersion() {
-  const ffmpegPath = getBinPath("ffmpeg");
-  const version = await execAsync(`"${ffmpegPath}" -version`);
-  const match = version.stdout.match(/ffmpeg version (\S+)/);
-  return match ? match[1].trim() : "";
+  try {
+    const ffmpegPath = getBinPath("ffmpeg");
+    const version = await execAsync(`"${ffmpegPath}" -version`, { timeout: 5e3 });
+    const match = version.stdout.match(/ffmpeg version (\S+)/);
+    return match ? match[1].trim() : "";
+  } catch (error) {
+    logError("获取本地 FFmpeg 版本失败", {
+      error: error instanceof Error ? error.message : String(error)
+    });
+    return "";
+  }
 }
 
 const tempTaskMap = /* @__PURE__ */ new Map();
@@ -5482,6 +5489,13 @@ class SettingService {
   }
   // 保存设置
   async saveSetting(setting) {
+    if (setting.useGoSnapfile !== void 0) {
+      const currentUseGo = settingStore.get("useGoSnapfile");
+      const nextUseGo = setting.useGoSnapfile;
+      if (nextUseGo !== currentUseGo && snapfileService.getActiveTasks().size > 0) {
+        throw new Error("下载中，完成后才能切换");
+      }
+    }
     await settingStore.set(setting);
     ProxyService$1.setupProxy();
     if (setting.useGoSnapfile !== void 0) {

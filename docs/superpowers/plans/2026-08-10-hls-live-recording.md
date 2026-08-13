@@ -1,5 +1,8 @@
 # HLS Live Recording Implementation Plan (v2)
 
+> **实施状态**: 尚未实现。本文档是实施计划，不是完成报告。
+> **fMP4 状态**: `docs/fMP4.md` 是后续优化候选，当前计划仍按 TS→remux 执行；待 HLS 落地后再评估 fMP4。
+
 > **修订说明**: 本版 plan 根据 critic review (critic.md) 全面修正了以下问题:
 > - Mock 脚本参数解析 (C1)
 > - VOD 进度 total_duration (C2)
@@ -17,7 +20,7 @@
 
 **Goal:** 为 snapany-rs 添加 HLS VOD 和 Live 录制支持, 把所有 HLS 工作委托给 ffmpeg.
 
-**Design doc:** `docs/superpowers/specs/2025-08-10-hls-live-recording-design.md`
+**Design doc:** `docs/superpowers/specs/2026-08-10-hls-live-recording-design.md`
 
 **Critic:** `docs/superpowers/critic.md`
 
@@ -59,7 +62,7 @@ snapany-rs/
 │   ├── mock_ffmpeg_live.sh             # NEW: Live mock (持续运行直到 SIGINT)
 │   ├── mock_ffmpeg_remux.sh            # NEW: remux mock (复制 ts → mp4)
 │   └── hls_integration_test.rs         # NEW: 集成测试
-└── docs/superpowers/plans/2025-08-10-hls-live-recording.md  # This file
+└── docs/superpowers/plans/2026-08-10-hls-live-recording.md  # This file
 ```
 
 **职责边界:**
@@ -153,16 +156,18 @@ mod hls;
 - [ ] **Step 2: hls.rs — 检测函数**
 
 ```rust
-/// 检测 URL 是否为 HLS 流.
-/// 检查 .m3u8 后缀, 或包含 .m3u8? / .m3u8# (query string / fragment).
-/// snapany-rs 不做 Content-Type 检测 (不发送 HTTP 请求).
+/// URL fallback 检测.
+/// 优先应由 Electron 传入 yt-dlp 元数据 (protocol / manifest_url / ext / is_live).
+/// 本函数只用于无法取得元数据时的 fallback.
 pub fn is_hls_url(url: &str) -> bool {
     let lower = url.to_lowercase();
-    lower.ends_with(".m3u8") || lower.contains(".m3u8?") || lower.contains(".m3u8#")
+    let path = lower.split(|c| c == '?' || c == '#').next().unwrap_or(&lower);
+    path.ends_with(".m3u8")
 }
 ```
 
-> **C8 修正**: 原版遗漏 `.m3u8#` (fragment). 非 .m3u8 结尾的 CDN URL 是 V1 已知限制.
+> **C8 修正**: 原版遗漏 `.m3u8#` (fragment). 此版本同时覆盖 query/fragment.
+> 非 .m3u8 结尾的 CDN URL 必须依赖 yt-dlp 元数据判断, 不做 Content-Type 探测.
 
 - [ ] **Step 3: hls.rs — ffmpeg 命令构造**
 
@@ -174,6 +179,7 @@ use std::path::Path;
 /// Headers 用 \r\n (CRLF) 拼接, 末尾追加 \r\n (ffmpeg -headers 要求).
 /// is_live=true 时不加 -movflags +faststart (Live 输出 TS, 无 moov atom).
 /// 输出路径始终是最后一个参数.
+/// 实际实现建议使用 OsString / Command::arg(PathBuf), 避免 to_string_lossy 破坏非 UTF-8 路径.
 pub fn build_ffmpeg_hls_args(
     m3u8_url: &str,
     headers: Option<&HashMap<String, String>>,
@@ -221,10 +227,11 @@ pub fn build_ffmpeg_hls_args(
 /// 解析单行 ffmpeg -progress 输出.
 /// 返回 Some(done_seconds) 表示有意义的进度行.
 /// 返回 None 表示无关行 (frame=, fps=, total_size= 等).
+/// `progress=end` 不是进度数据, 也返回 None.
 pub fn parse_progress_line(line: &str) -> Option<u64> {
     let line = line.trim();
     if line == "progress=end" {
-        return Some(0);
+        return None;
     }
     if let Some(us_str) = line.strip_prefix("out_time_us=") {
         if let Ok(us) = us_str.trim().parse::<u64>() {
@@ -291,7 +298,7 @@ pub fn check_disk_space(_path: &Path, _threshold_mb: u64) -> Result<u64, Snapfil
 在 `src/hls.rs` 底部添加 `#[cfg(test)] mod tests` 块, 覆盖:
 - `is_hls_url`: 简单 .m3u8 / 带 query / 带 fragment / 大写 / 非 HLS / m4s
 - `build_ffmpeg_hls_args`: VOD+headers (CRLF 验证) / Live 无 faststart / progress=pipe:1 / 空 headers 跳过 / output 是最后一个参数
-- `parse_progress_line`: out_time_us → 秒 / progress=end / 无关行 / 畸形输入 / 带空白
+- `parse_progress_line`: out_time_us → 秒 / progress=end 返回 None / 无关行 / 畸形输入 / 带空白
 - `check_disk_space`: /tmp 正常阈值 / 不可能阈值
 
 - [ ] **Step 7: 验证编译 + 测试**
@@ -322,7 +329,7 @@ use tokio::io::{AsyncBufReadExt, BufReader};
 
 /// Spawn 一个 task 持续读 ffmpeg stderr, 输出到 tracing.
 /// 防止 stderr 管道缓冲区满导致 ffmpeg 阻塞死锁.
-fn spawn_stderr_drainer(stderr: std::process::ChildStderr, task_id: &str) {
+fn spawn_stderr_drainer(stderr: tokio::process::ChildStderr, task_id: &str) {
     let tid = task_id.to_string();
     tokio::spawn(async move {
         let mut reader = BufReader::new(stderr).lines();
@@ -945,7 +952,8 @@ async fn run_hls_task(
 
     let source_file = if task.live {
         // Live: ffmpeg → TS → remux → MP4
-        if let Err(e) = hls::check_disk_space(&task.output_dir, 500) {
+        // 检查实际写入位置所在文件系统, 不是 output_dir.
+        if let Err(e) = hls::check_disk_space(&temp_root, 500) {
             return Err(to_task_error(e, &task.id));
         }
 
@@ -1500,39 +1508,39 @@ delete-task
 
 ---
 
-## 自检清单
+## 计划覆盖清单（尚未实现）
 
 ### Spec 覆盖
 
-- [x] HLS URL 检测 (.m3u8 / .m3u8? / .m3u8#) — Task 2
-- [x] ffmpeg 命令构造 (CRLF headers) — Task 2
-- [x] 进度解析 (out_time_us → 秒) — Task 2
-- [x] VOD HLS 流程 — Task 4, 8
-- [x] Live HLS 流程 (SIGINT 停止) — Task 5, 6, 8
-- [x] TS → MP4 remux — Task 7
-- [x] 磁盘空间检查 — Task 2
-- [x] Header 安全 (不记 value) — Task 2, 10
-- [x] temp → final move — Task 8
-- [x] ffmpeg 异常 → partial 保留 — Task 4, 6
-- [x] 硬取消 → 不保留 — Task 4, 6
-- [x] Live 进度 total=0 — Task 6
-- [x] 不做 auto-reconnect — by design
-- [x] DASH/直链不变 — by design (分支只在 .m3u8)
-- [x] stderr 消费 — Task 3
-- [x] semaphore 共享 — Task 8
+- [ ] HLS URL fallback 检测 (.m3u8 带 query/fragment) — Task 2
+- [ ] ffmpeg 命令构造 (CRLF headers) — Task 2
+- [ ] 进度解析 (out_time_us → 秒) — Task 2
+- [ ] VOD HLS 流程 — Task 4, 8
+- [ ] Live HLS 流程 (SIGINT 停止) — Task 5, 6, 8
+- [ ] TS → MP4 remux — Task 7
+- [ ] 磁盘空间检查 — Task 2
+- [ ] Header 安全 (不记 value) — Task 2, 10
+- [ ] temp → final move — Task 8
+- [ ] ffmpeg 异常 → partial 保留 — Task 4, 6
+- [ ] 硬取消 → 不保留 — Task 4, 6
+- [ ] Live 进度 total=0 — Task 6
+- [ ] 不做 auto-reconnect — by design
+- [ ] DASH/直链不变 — by design (分支只在 .m3u8)
+- [ ] stderr 消费 — Task 3
+- [ ] semaphore 共享 — Task 8
 
 ### Critic 覆盖
 
-- [x] C1: mock 参数 ${@: -1}
-- [x] C2: duration_secs.unwrap_or(0)
-- [x] C3: 分支在 semaphore 后
-- [x] C4: spawn_stderr_drainer
-- [x] C5: 不做 TDD 仪式
-- [x] C6: LiveStopSignal
-- [x] C7: graceful_stop flag
-- [x] C8: .m3u8# 检测
-- [x] C9: speed=0 设计决策
-- [x] C10: header 只记 key
-- [x] C11: 凭据不刷新, 已知限制
-- [x] C12: TS 中间格式
-- [x] C13: partial → Ok, empty → Err + guard
+- [ ] C1: mock 参数 ${@: -1}
+- [ ] C2: duration_secs.unwrap_or(0)
+- [ ] C3: 分支在 semaphore 后
+- [ ] C4: spawn_stderr_drainer
+- [ ] C5: 不做 TDD 仪式
+- [ ] C6: LiveStopSignal
+- [ ] C7: graceful_stop flag
+- [ ] C8: .m3u8# 检测
+- [ ] C9: speed=0 设计决策
+- [ ] C10: header 只记 key
+- [ ] C11: 凭据不刷新, 已知限制
+- [ ] C12: TS 中间格式
+- [ ] C13: partial → Ok, empty → Err + guard

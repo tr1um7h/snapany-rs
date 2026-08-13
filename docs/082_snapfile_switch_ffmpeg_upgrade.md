@@ -1,6 +1,6 @@
 # Snapfile 开关 + FFmpeg 版本展示
 
-**日期**: 2026-08-11
+**日期**: 2026-08-13
 **状态**: 已实现
 
 ---
@@ -66,7 +66,7 @@ this.executablePath = getBinPath(useGo ? "snapfile-go" : "snapfile");
 2. 构造函数重新读取 setting
 3. `snapfileService.start()` — 用新路径启动
 
-SnapfileService 已有完善的 stop/start 机制，无需额外开发。
+当前还增加了运行中保护：当 snapfile 有活跃任务时，UI 会提示 `下载中，完成后才能切换`，主进程也会拒绝切换，避免 stop 丢失任务。
 
 ### UI 设计
 
@@ -76,22 +76,23 @@ SnapfileService 已有完善的 stop/start 机制，无需额外开发。
   - 中文: `使用原版 snapfile (Go)`
   - 英文: `Use original snapfile (Go)`
 - **说明**: `重启下载引擎后生效。原版支持直播录制等功能。`
+- **运行中拦截**: 下载任务未完成时提示 `下载中，完成后才能切换`。
 
 ### 部署脚本改动
 
-`dist/package.sh` 增加:
+`dist/package.sh` 实际增加:
 
 ```bash
 # 复制 Go 原版 snapfile
-cp "$PROJECT_DIR/vendor/snapfile-go/snapfile" "$SCRIPT_DIR/snapfile-go"
-# 部署到 app bundle
-cp "$SCRIPT_DIR/snapfile-go" "$APP_PATH/Contents/Resources/app.asar.unpacked/public/bin/snapfile-go"
+cp "$PROJECT_DIR/vendor/snapfile-go/snapfile" \
+  "$APP_PATH/Contents/Resources/app.asar.unpacked/public/bin/snapfile-go"
 ```
 
 ### 已知限制
 
 - snapfile-go 仅 x86_64，Apple Silicon 需 Rosetta 2
 - 如果启动失败，用户可关闭开关恢复 Rust 版
+- 下载进行中禁止切换，切换按钮会提示任务完成后再操作
 
 ---
 
@@ -103,7 +104,7 @@ About 页只展示本地 FFmpeg 版本，不检测远程版本，也不自动升
 
 | 方法 | 说明 |
 |------|------|
-| `getLocalFFmpegVersion()` | 返回 `{ version }`，读取本地 `ffmpeg -version` |
+| `getLocalFFmpegVersion()` | 返回 `{ version }`，读取本地 `ffmpeg -version`；失败时返回空字符串 |
 
 ### UI 设计
 
@@ -113,11 +114,23 @@ About 页组件版本行下方显示：
 FFmpeg Version  6.1.1-tessus  View Releases
 ```
 
+`View Releases` 指向内置 FFmpeg 的真实来源 `https://evermeet.cx/ffmpeg/`。
+
 ### 部署
 
 - 不再打包或复制 `ffmpeg-release.json`
 - 不调用 GitHub API
 - 不替换 `ffmpeg/ffprobe` 二进制
+
+---
+
+## 同 commit 其他改动
+
+除上述两个功能外，当前 commit 还包含以下补丁，应一起纳入复刻理解：
+
+- `fetch$1` 增加超时和 settled 保护，避免重复 resolve/reject。
+- `app.requestSingleInstanceLock` 增加单实例锁，第二个实例会聚焦已有窗口。
+- `initializeLibs()` 中先完成核心初始化，再启动 snapfile，避免依赖顺序竞争。
 
 ---
 
@@ -128,5 +141,5 @@ FFmpeg Version  6.1.1-tessus  View Releases
 
 ---
 
-**文档生成时间**: 2026-08-11
+**文档生成时间**: 2026-08-13
 **依赖文档**: `vendor/081_design.md` (snapfile 逆向分析)

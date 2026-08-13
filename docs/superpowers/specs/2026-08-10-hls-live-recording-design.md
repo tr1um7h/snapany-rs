@@ -1,7 +1,9 @@
 # HLS 录制架构设计文档
 
-**日期**: 2025-08-10
+**日期**: 2026-08-10
 **状态**: 已定稿（V1）
+
+> **fMP4 状态**: `docs/fMP4.md` 是后续优化候选，当前 HLS V1 仍采用 TS→remux；不把 fMP4 并入本设计。
 
 ## 核心原则
 
@@ -177,7 +179,7 @@ snapany-rs -> Electron: task_complete
 
 snapany-rs 对 HLS 的全部工作：
 
-1. **检测 URL 是否为 HLS 流**（URL 以 `.m3u8` 结尾，或包含 `.m3u8?` / `.m3u8#`）。snapany-rs 不做 Content-Type 检测——它不发送 HTTP 请求，Content-Type 由 ffmpeg 在连接时获取。`is_hls_content_type` 函数保留供 Electron 侧或未来 HEAD 请求使用，但不在 start-task 流程中调用。
+1. **检测 URL 是否为 HLS 流**。优先使用 Electron 传入的 yt-dlp 元数据（`protocol`、`manifest_url`、`ext`、`is_live`），URL 后缀规则（`.m3u8` / `.m3u8?` / `.m3u8#`）仅作为 fallback。snapany-rs 不发送 HTTP 请求做 Content-Type 探测。
 2. **构造 ffmpeg 命令**（拼接 `-headers`、`-i`、输出参数）
 3. **管理 ffmpeg 进程生命周期**（启动、停止、超时）
 4. **解析 `-progress` 输出**为进度事件
@@ -221,6 +223,8 @@ tracing::info!(
     "构造 ffmpeg HLS 命令"
 );
 ```
+
+验证必须覆盖：主 playlist、媒体 playlist、segment、AES 密钥请求和重定向后的请求，确认 `-headers` 在每种请求上都生效。
 
 ## 与现有架构集成
 
@@ -437,6 +441,8 @@ snapany-rs **不需要**自行解析 m3u8 或检测 ENDLIST——这是 ffmpeg �
 直播录制前，snapany-rs 应检查输出目录所在磁盘的剩余空间：
 - 低于阈值（如 500MB）时拒绝启动，报 `disk_full`
 - 防止无限时直播打满磁盘
+
+实际写入位置是 `temp_root`，因此必须检查 `temp_root` 所在文件系统；当 `tempDir` 与 `outputDir` 不在同一磁盘时，不能只检查 `outputDir`。
 
 ## 链路对比总结
 

@@ -1,7 +1,8 @@
-# fMP4 评估：替代 TS 中间格式
+# fMP4 评估：替代 TS 中间格式（后续规划）
 
-**日期**: 2025-08-11
-**结论**: fMP4 在所有维度优于或等于 TS→remux，建议采用。
+**日期**: 2026-08-13
+**状态**: 规划中，暂不纳入当前 HLS 实现
+**结论**: 当前 HLS 仍按 TS→remux 实现；待 TS 方案落地并完成真实环境验证后，再评估是否迁移 fMP4。
 
 ## 背景
 
@@ -77,7 +78,7 @@ ffmpeg -i test_stream.m3u8 -c copy -movflags +empty_moov+default_base_moof+frag_
 120s 测试视频 (640x360, 30fps, libx264)：
 
 | 格式 | 大小 | muxing overhead |
-------|------|----------------|
+|------|------|----------------|
 | 标准 MP4 (`+faststart`) | 699,829 bytes | 6.71% |
 | fMP4 (`+empty_moov+...`) | 687,430 bytes | 4.82% |
 | fMP4 (`+faststart+empty_moov+...`) | 687,430 bytes | 4.82% |
@@ -177,6 +178,6 @@ Task 编号从 11 个减少到 10 个。
 
 ## 结论
 
-fMP4 在 SIGINT、SIGKILL（有数据）、SIGKILL（无数据）三个场景下数据安全级别与 TS 完全等价，同时省掉了 remux 步骤和临时磁盘开销。代码实现更简单（单阶段）。唯一理论劣势（极老播放器兼容性）在 SnapAny 桌面应用场景中不成立。
+fMP4 在实验样本中的 SIGINT、SIGKILL（有数据）、SIGKILL（无数据）三个场景下表现出与 TS 相近的数据安全级别，同时可以省掉 remux 步骤和临时磁盘开销。
 
-建议采用 fMP4，更新 plan v2。
+但当前结论仍来自有限实验，且实现计划、设计文档和测试 mock 都按 TS→remux 编写。为避免同一阶段维护两套路径，当前不采用 fMP4；先完成 TS→remux 版 HLS，后续再做一次完整的 fMP4 对比验证。
