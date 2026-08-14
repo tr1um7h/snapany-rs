@@ -9454,6 +9454,121 @@ class VideoAudioMergeService {
     }
   }
   /**
+   * [FilesMerge] 按给定顺序将多个视频文件首尾拼接（concat demuxer）
+   * 先尝试流复制（无损、秒级），失败时自动回退为 libx264/aac 重编码
+   * @param files 文件绝对路径数组（顺序即拼接顺序）
+   * @param outputDir 输出目录
+   * @param outputName 输出文件名（主进程会去掉扩展名并追加实际格式扩展名）
+   * @param outputFormat 输出格式（如 mp4）
+   * @returns 执行结果
+   */
+  async filesMergeConcat(files, outputDir, outputName, outputFormat) {
+    try {
+      if (currentFFmpegCommand) {
+        this.stopCurrentMergeTask();
+      }
+      if (!files || files.length === 0) {
+        return {
+          success: false,
+          error: "没有选择任何文件"
+        };
+      }
+      const ext = `.${outputFormat || "mp4"}`;
+      const baseName = String(outputName || "merged").replace(/\.[^.]+$/, "");
+      const outputPath = await this.prepareOutputPath(outputDir, baseName, ext);
+      const outputTempPath = await this.prepareOutputPath(`${outputDir}/.snapany`, `${baseName}_concat`, ext);
+      const listPath = path.join(outputDir, ".snapany", `concat_list_${Date.now()}.txt`);
+      await fs.ensureDir(path.dirname(listPath));
+      const listContent = files.map((f2) => `file '${String(f2).replace(/'/g, "'\\''")}'`).join("\n");
+      await fs.writeFile(listPath, listContent, "utf8");
+      console.log(`[FilesMerge] 拼接 ${files.length} 个文件 -> ${outputPath}`);
+      const durations = await Promise.all(files.map((filePath) => getFilePathMediaInfo(filePath).then((info) => {
+        const streams = info && info.streams || [];
+        return streams.reduce((max, s) => {
+          const d = Number(s == null ? void 0 : s.duration) || 0;
+          return d > max ? d : max;
+        }, 0);
+      }).catch(() => 0)));
+      const totalDuration = durations.reduce((a, b) => a + b, 0);
+      const handlers = main.getRendererHandlers(getMainWindow()?.webContents);
+      const runOnce = (codecArgs) => new Promise((resolve) => {
+        const command = ffmpeg();
+        command.input(listPath).inputFormat("concat").inputOptions(["-safe 0"]);
+        command.outputOptions(codecArgs);
+        command.output(outputTempPath);
+        currentFFmpegCommand = command;
+        command.on("start", (commandLine) => {
+          console.log("[FilesMerge] 开始:", commandLine);
+        }).on("progress", (progress) => {
+          let percent = progress.percent;
+          if ((!percent || Number.isNaN(percent)) && totalDuration > 0 && progress.timemark) {
+            const m2 = String(progress.timemark).match(/(\d+):(\d+):(\d+\.?\d*)/);
+            if (m2) {
+              const sec = parseInt(m2[1], 10) * 3600 + parseInt(m2[2], 10) * 60 + parseFloat(m2[3]);
+              percent = Math.min(100, sec / totalDuration * 100);
+            }
+          }
+          if (percent && !Number.isNaN(percent)) {
+            handlers?.onVideoAudioMergeProgress?.send({
+              status: "merging",
+              progress: percent
+            });
+          }
+        }).on("error", (err) => {
+          console.error("[FilesMerge] FFmpeg错误:", err.message);
+          currentFFmpegCommand = null;
+          const cancelled = /SIGKILL|was killed/.test(err.message || "");
+          resolve({
+            success: false,
+            error: err.message,
+            cancelled
+          });
+        }).on("end", async () => {
+          console.log("[FilesMerge] 完成");
+          currentFFmpegCommand = null;
+          let finalPath = outputPath;
+          let counter = 1;
+          while (await fs.pathExists(finalPath)) {
+            finalPath = `${outputPath.slice(0, -ext.length)}(${counter})${ext}`;
+            counter++;
+          }
+          await fs.move(outputTempPath, finalPath);
+          handlers?.onVideoAudioMergeProgress?.send({
+            status: "success",
+            outputPath: finalPath,
+            outputName: path.basename(finalPath)
+          });
+          resolve({
+            success: true,
+            outputPath: finalPath
+          });
+        }).run();
+      });
+      let result = await runOnce(["-c", "copy"]);
+      if (!result.success && !result.cancelled) {
+        console.log("[FilesMerge] 流复制失败，回退为重编码:", result.error);
+        handlers?.onVideoAudioMergeProgress?.send({ status: "merging", progress: 0 });
+        result = await runOnce(["-c:v", "libx264", "-c:a", "aac"]);
+      }
+      await fs.remove(listPath).catch(() => {
+      });
+      if (!result.success && !result.cancelled) {
+        handlers?.onVideoAudioMergeProgress?.send({
+          status: "error",
+          error: result.error
+        });
+      }
+      return result;
+    } catch (error) {
+      console.error("视频拼接错误:", error);
+      currentFFmpegCommand = null;
+      return {
+        success: false,
+        error: `拼接过程中发生错误: ${error.message}`
+      };
+    }
+  }
+  /**
    * 停止当前正在进行的合并任务
    * @returns 停止结果，包含成功状态和可能的错误信息
    */
@@ -9698,6 +9813,28 @@ const videoAudioMergeRoute = {
       return {
         success: false,
         error: `合并失败: ${error.message}`
+      };
+    }
+  }),
+  // [FilesMerge] 按顺序拼接多个视频文件为一个文件
+  filesMerge: t.procedure.input().action(async ({ input }) => {
+    if (!input || !Array.isArray(input.files) || input.files.length === 0) {
+      return {
+        success: false,
+        error: "没有选择任何文件"
+      };
+    }
+    try {
+      const setting = SettingService$1.getSetting();
+      const outputDir = setting.downloadPath;
+      const outputFormat = setting.videoConfig.format.format;
+      const result = await VideoAudioMergeService$1.filesMergeConcat(input.files, outputDir, input.outputName, outputFormat);
+      return result;
+    } catch (error) {
+      console.error("视频拼接失败:", error);
+      return {
+        success: false,
+        error: `拼接失败: ${error.message}`
       };
     }
   }),

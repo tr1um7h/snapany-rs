@@ -2,6 +2,23 @@
 
 SnapAny App 补丁修改记录
 
+## [1.2.0] - 2026-08-14
+
+### 新增
+- **FilesMerge（文件拼接）菜单**：新增第 5 个侧边栏菜单，把多个视频文件按文件名自然排序（默认升序，可切换降序）首尾拼接为一个视频
+  - 主进程：`VideoAudioMergeService.filesMergeConcat()`，ffmpeg concat demuxer，先 `-c copy` 无损流复制，失败自动回退 `libx264/aac` 重编码；取消（SIGKILL）不会误触发回退
+  - IPC：新增 `filesMerge` procedure（复用 `onVideoAudioMergeProgress` 通道推送进度）；输出目录/格式沿用设置的下载目录和视频格式
+  - 渲染层：`FilesMergePage` 组件（添加/拖拽文件、列表、排序切换、进度/成功/失败/重试 UI）；16 种语言的 i18n 注入（`filesMergeNs` + `application.menu.filesMerge`）
+- `init-from-asar.sh`：一次性把 app 从 asar 布局转换为 `Resources/app/` 目录布局（解包 + 合入 unpacked + 应用补丁 + 禁用 asar + 重签名）
+
+### 修改
+- 部署布局变更：`/Applications/SnapAny.app` 由 `app.asar` 改为 `Resources/app/` 目录（Electron 自动回退加载目录布局；`app.asar` 改名 `app.asar.disabled` 保留以便回滚）
+
+### 已知问题
+- 签名是 ad-hoc，严格签名验证会失败，但应用可正常运行
+- `-c copy` 要求各视频编码参数一致，不一致时自动整体重编码（速度慢但结果正确）
+
+---
 ## [1.1.0] - 2026-08-08
 
 ### 新增

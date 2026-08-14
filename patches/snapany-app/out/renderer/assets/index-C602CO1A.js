@@ -30943,11 +30943,29 @@ const settings$f = { "general": "সাধারণ", "saveTo": "সংরক্
 const taskModal$f = { "tip1": "অসম্পূর্ণ ডাউনলোড আছে। আপনি কি নিশ্চিত যে আপনি বের হতে চান?", "confirmClose": "অ্যাপ বন্ধ করুন", "continueDownload": "চালিয়ে যান", "tip2": "গতবারের অসম্পূর্ণ ডাউনলোড পাওয়া গেছে। আপনি কি এখন ডাউনলোড করতে চান?", "cancelDownload": "বাতিল", "download": "ডাউনলোড চালিয়ে যান" };
 const update$f = { "newVersion": "নতুন সংস্করণ", "newVersionAvailable": "নতুন সংস্করণ উপলব্ধ", "whatsNew": "নতুন কি আছে", "upgradeNow": "এখন আপডেট করুন", "downloading": "ডাউনলোড হচ্ছে...", "remindAfterDownload": "ডাউনলোডের পর মনে করিয়ে দিন", "newVersionReady": "নতুন সংস্করণ প্রস্তুত", "installNow": "এখন ইনস্টল করুন", "remindLater": "পরে মনে করিয়ে দিন", "installTip": "নতুন সংস্করণ প্রস্তুত। আপনি কি এখন ইনস্টল করতে চান?", "laterBtn": "পরে ইনস্টল করুন", "downloadErrorTip": "ডাউনলোড ব্যর্থ হয়েছে। অনুগ্রহ করে সর্বশেষ ইনস্টলেশন প্যাকেজ ডাউনলোড করতে আমাদের ওয়েবসাইটে যান।", "nextUpdate": "পরবর্তী আপডেট", "goWebsite": "ওয়েবসাইটে যান" };
 const mainMenu$f = { "download": "ডাউনলোড", "online": "অনলাইন", "convert": "রূপান্তর", "audioVideoMerger": "অডিও এবং ভিডিও মার্জার", "joinTelegramGroup": "টেলিগ্রাম গ্রুপে যোগ দিন", "joinDiscordCommunity": "ডিসকোর্ড কমিউনিটিতে যোগ দিন" };
-const application$f = { "menu": { "download": "ডাউনলোড", "network": "অনলাইন", "format": "রূপান্তর", "merge": "মার্জ" }, "loading": "লোড হচ্ছে..." };
+const application$f = { "menu": { "download": "ডাউনলোড", "network": "অনলাইন", "format": "রূপান্তর", "merge": "মার্জ", "filesMerge": "ফাইল জোড়া" }, "loading": "লোড হচ্ছে..." };
 const common$f = { "cancel": "বাতিল", "ok": "ঠিক আছে", "selectAll": "সব নির্বাচন করুন", "cancelAll": "সব বাতিল করুন" };
 const merge$f = { "noData": "ফাইল যোগ করতে ক্লিক করুন বা ফাইল এখানে টেনে আনুন", "selectFiles": "ফাইল যোগ করুন", "fileName": "ফাইলের নাম", "duration": "সময়কাল", "format": "ফরম্যাট", "video": "ভিডিও", "audio": "অডিও", "subtitle": "সাবটাইটেল", "addFiles": "ফাইল যোগ করুন", "clear": "মুছে ফেলুন", "needAddFile": "আপনাকে একটি ভিডিও ফাইল যোগ করতে হবে", "merge": "মার্জ করুন", "merging": "মার্জ হচ্ছে", "cancel": "বাতিল", "failed": "মার্জ ব্যর্থ", "close": "বন্ধ করুন", "retry": "আবার চেষ্টা করুন", "success": "মার্জ সম্পন্ন", "saveTip": "নির্দিষ্ট ফোল্ডারে সংরক্ষিত", "view": "দেখুন", "viewInWin": "ফোল্ডারে দেখান", "viewInMac": "Finder এ দেখান", "mergePrefixName": "[একত্রিত]" };
 const network$f = { "search": "অনুসন্ধান", "searchPlaceholder": "ওয়েবসাইটে অনুসন্ধান করুন", "addSite": "ওয়েবসাইট যোগ করুন", "go": "যান", "noFilesFound": "কোন ফাইল পাওয়া যায়নি", "emptyTip1": "এই ওয়েবসাইটে কোন ফাইল নেই", "emptyTip2": "শুরু করতে একটি ওয়েবসাইট যোগ করুন", "resourceTitle": "রিসোর্স", "all": "সব({{number}})", "video": "ভিডিও({{number}})", "audio": "অডিও({{number}})", "selectAll": "সব নির্বাচন করুন", "download": "ডাউনলোড", "downloadTip": "ডাউনলোড", "downloadedTip": "ডাউনলোড করা হয়েছে", "previewTip": "প্রিভিউ", "copyLinkTip": "লিংক কপি করুন", "copyLinkSuccess": "কপি করা হয়েছে", "live": "লাইভ", "addSiteModal": { "title": "ওয়েবসাইট যোগ করুন", "url": "URL", "urlPlaceholder": "ওয়েবসাইটের URL লিখুন", "add": "যোগ করুন", "cancel": "বাতিল করুন" } };
 const format$f = { "header": "মিডিয়া কনভার্টার", "subHeader": "মিডিয়া ফাইল সহজে ব্যাচে রূপান্তর করুন", "videoConverter": "ভিডিও কনভার্টার", "videoDescription": "MP4, MKV, MOV, WebM, AVI, MPEG, WMV, FLV এবং আরও ফরম্যাট", "audioConverter": "অডিও কনভার্টার", "audioDescription": "MP3, AAC, WAV, FLAC, ALAC, M4A, OGG, WMA এবং আরও ফরম্যাট", "imageConverter": "ছবি কনভার্টার", "imageDescription": "JPEG, PNG, GIF, BMP, WebP, RAW, TIFF, HEIF এবং আরও ফরম্যাট", "chooseFiles": "ফাইল নির্বাচন করুন", "tipTitle": "ব্যবহার নির্দেশিকা:", "tip1": '"ফাইল নির্বাচন করুন" এ ক্লিক করুন বা রূপান্তর করার জন্য ফাইল টেনে আনুন', "tip2": "কাঙ্ক্ষিত আউটপুট ফরম্যাট নির্বাচন করুন", "tip3": '"রূপান্তর করুন" এ ক্লিক করুন, রূপান্তরিত ফাইল স্বয়ংক্রিয়ভাবে সংরক্ষিত হবে', "total": "মোট {{number}}টি আইটেম", "failed": "ব্যর্থ {{number}}টি", "fileName": "ফাইলের নাম", "resolution": "রেজোলিউশন", "duration": "সময়কাল", "original": "মূল", "output": "আউটপুট", "addFiles": "ফাইল যোগ করুন", "clear": "পরিষ্কার করুন", "outputFormat": "আউটপুট ফরম্যাট", "searchPlaceholder": "অনুসন্ধান", "all": "সব", "video": "ভিডিও", "audio": "অডিও", "convert": "রূপান্তর করুন", "converting": "রূপান্তর করা হচ্ছে", "completed": "সম্পন্ন হয়েছে", "clearModal": { "title": "ফাইল রূপান্তর করা হচ্ছে। পরিষ্কার করবেন?", "cancel": "বাতিল", "clear": "পরিষ্কার করুন" } };
+const filesMergeNs = {
+  "en": { "menu": "Files Merge", "orderAsc": "Ascending", "orderDesc": "Descending", "tip": "All videos will be joined into one file, in the list order shown above (natural order by file name)." },
+  "zh-Hans": { "menu": "文件拼接", "orderAsc": "升序", "orderDesc": "降序", "tip": "所有视频将按上方列表顺序（文件名自然排序）首尾拼接为一个文件。" },
+  "zh-Hant": { "menu": "檔案拼接", "orderAsc": "遞增", "orderDesc": "遞減", "tip": "所有影片將按上方列表順序（檔名自然排序）前後拼接為一個檔案。" },
+  "de": { "menu": "Dateien verbinden", "orderAsc": "Aufsteigend", "orderDesc": "Absteigend", "tip": "Alle Videos werden in der oben angezeigten Reihenfolge zu einer Datei zusammengefügt (natürliche Sortierung nach Dateiname)." },
+  "es": { "menu": "Unir archivos", "orderAsc": "Ascendente", "orderDesc": "Descendente", "tip": "Todos los vídeos se unirán en un solo archivo, en el orden de la lista (orden natural por nombre)." },
+  "fr": { "menu": "Fusionner les fichiers", "orderAsc": "Croissant", "orderDesc": "Décroissant", "tip": "Toutes les vidéos seront jointes en un seul fichier, dans l'ordre de la liste (ordre naturel par nom)." },
+  "ru": { "menu": "Склейка файлов", "orderAsc": "По возрастанию", "orderDesc": "По убыванию", "tip": "Все видео будут объединены в один файл в порядке списка (естественная сортировка по имени)." },
+  "hi": { "menu": "फ़ाइलें जोड़ें", "orderAsc": "आरोही", "orderDesc": "अवरोही", "tip": "सभी वीडियो सूची के क्रम में एक फ़ाइल में जुड़ेंगे (फ़ाइल नाम के प्राकृतिक क्रम में)।" },
+  "id": { "menu": "Gabung File", "orderAsc": "Naik", "orderDesc": "Turun", "tip": "Semua video akan digabung menjadi satu file sesuai urutan daftar (urutan alami berdasarkan nama file)." },
+  "bn": { "menu": "ফাইল জোড়া", "orderAsc": "ঊর্ধ্বক্রম", "orderDesc": "নম্নক্রম", "tip": "তালিকার ক্রমে সব ভিডিও একটি ফাইলে যুক্ত হবে (ফাইলের নাম অনুযায়ী স্বাভাবিক ক্রম)।" },
+  "pt": { "menu": "Juntar arquivos", "orderAsc": "Crescente", "orderDesc": "Decrescente", "tip": "Todos os vídeos serão unidos em um único arquivo, na ordem da lista (ordem natural por nome)." },
+  "ja": { "menu": "ファイル結合", "orderAsc": "昇順", "orderDesc": "降順", "tip": "リストの順序（ファイル名の自然順）で全ての動画を1つのファイルに連結します。" },
+  "ko": { "menu": "파일 합치기", "orderAsc": "오름차순", "orderDesc": "내림차순", "tip": "목록 순서(파일 이름 자연순)대로 모든 동영상이 하나의 파일로 연결됩니다." },
+  "vi": { "menu": "Ghép tệp", "orderAsc": "Tăng dần", "orderDesc": "Giảm dần", "tip": "Tất cả video sẽ được ghép thành một tệp theo thứ tự danh sách (thứ tự tự nhiên theo tên tệp)." },
+  "tr": { "menu": "Dosya Birleştir", "orderAsc": "Artan", "orderDesc": "Azalan", "tip": "Tüm videolar liste sırasına göre (dosya adına göre doğal sıra) tek dosyada birleştirilecek." },
+  "it": { "menu": "Unisci file", "orderAsc": "Crescente", "orderDesc": "Decrescente", "tip": "Tutti i video verranno uniti in un unico file, nell'ordine dell'elenco (ordine naturale per nome)." }
+};
 const bn$1 = {
   download: download$f,
   taskStatus: taskStatus$f,
@@ -30965,6 +30983,7 @@ const bn$1 = {
   application: application$f,
   common: common$f,
   merge: merge$f,
+  filesMerge: filesMergeNs["bn"],
   network: network$f,
   format: format$f
 };
@@ -30981,7 +31000,7 @@ const settings$e = { "general": "Allgemein", "saveTo": "Speichern unter", "chang
 const taskModal$e = { "tip1": "Es gibt laufende Downloads. Möchten Sie wirklich beenden?", "confirmClose": "Anwendung schließen", "continueDownload": "Fortfahren", "tip2": "Unterbrochene Downloads wurden gefunden. Möchten Sie sie jetzt fortsetzen?", "cancelDownload": "Abbrechen", "download": "Fortsetzen" };
 const update$e = { "newVersion": "Neue Version", "newVersionAvailable": "Neue Version verfügbar", "whatsNew": "Was ist neu", "upgradeNow": "Jetzt aktualisieren", "downloading": "Wird heruntergeladen...", "remindAfterDownload": "Nach dem Download erinnern", "newVersionReady": "Neue Version ist bereit", "installNow": "Jetzt installieren", "remindLater": "Später erinnern", "installTip": "Die neue Version ist bereit. Möchten Sie sie jetzt installieren?", "laterBtn": "Später installieren", "downloadErrorTip": "Download fehlgeschlagen. Bitte besuchen Sie unsere Website, um das neueste Installationspaket herunterzuladen.", "nextUpdate": "Nächstes Update", "goWebsite": "Zur Website" };
 const mainMenu$e = { "download": "Download", "online": "Online", "convert": "Konvertieren", "audioVideoMerger": "Audio-Video-Zusammenführung", "joinTelegramGroup": "Telegram-Gruppe beitreten", "joinDiscordCommunity": "Discord-Community beitreten" };
-const application$e = { "menu": { "download": "Download", "network": "Online", "format": "Konvertieren", "merge": "Zusammenführen" }, "loading": "Laden..." };
+const application$e = { "menu": { "download": "Download", "network": "Online", "format": "Konvertieren", "merge": "Zusammenführen", "filesMerge": "Dateien verbinden" }, "loading": "Laden..." };
 const common$e = { "cancel": "Abbrechen", "ok": "OK", "selectAll": "Alles auswählen", "cancelAll": "Alles abbrechen" };
 const merge$e = { "noData": "Wählen Sie Dateien aus oder ziehen Sie sie hierher", "selectFiles": "Dateien Auswählen", "fileName": "Dateiname", "duration": "Dauer", "format": "Format", "video": "Video", "audio": "Audio", "subtitle": "Untertitel", "addFiles": "Dateien Hinzufügen", "clear": "Löschen", "needAddFile": "Bitte fügen Sie Videodateien hinzu", "merge": "Zusammenführen", "merging": "Wird zusammengeführt", "cancel": "Abbrechen", "failed": "Fehlgeschlagen", "close": "Schließen", "retry": "Wiederholen", "success": "Erfolgreich", "saveTip": "Gespeichert", "view": "Anzeigen", "viewInWin": "Im Ordner anzeigen", "viewInMac": "Im Finder anzeigen", "mergePrefixName": "[Zusammengeführt]" };
 const network$e = { "search": "Suchen", "searchPlaceholder": "Auf der Website suchen", "addSite": "Website hinzufügen", "go": "Los", "noFilesFound": "Keine Dateien gefunden", "emptyTip1": "Keine Dateien auf dieser Website", "emptyTip2": "Fügen Sie eine Website hinzu, um zu beginnen", "resourceTitle": "Ressourcen", "all": "Alle({{number}})", "video": "Video({{number}})", "audio": "Audio({{number}})", "selectAll": "Alle auswählen", "download": "Herunterladen", "downloadTip": "Herunterladen", "downloadedTip": "Heruntergeladen", "previewTip": "Vorschau", "copyLinkTip": "Link kopieren", "copyLinkSuccess": "Kopiert", "live": "Live", "addSiteModal": { "title": "Website hinzufügen", "url": "URL", "urlPlaceholder": "Website-URL eingeben", "add": "Hinzufügen", "cancel": "Abbrechen" } };
@@ -31003,6 +31022,7 @@ const de = {
   application: application$e,
   common: common$e,
   merge: merge$e,
+  filesMerge: filesMergeNs["de"],
   network: network$e,
   format: format$e
 };
@@ -31022,7 +31042,7 @@ const network$d = { "search": "Search", "searchPlaceholder": "Search by keywords
 const format$d = { "header": "Media Converter", "subHeader": "Easily convert media files in batches", "videoConverter": "Video Converter", "videoDescription": "MP4, MKV, MOV, WebM, AVI, MPEG, WMV, FLV, and more", "audioConverter": "Audio Converter", "audioDescription": "MP3, AAC, WAV, FLAC, ALAC, M4A, OGG, WMA, and more", "imageConverter": "Image Converter", "imageDescription": "JPEG, PNG, GIF, BMP, WebP, RAW, TIFF, HEIF, and more", "chooseFiles": "Choose Files", "tipTitle": "How it works:", "tip1": "Click “Choose Files” or drag files into the box", "tip2": "Select your desired output format", "tip3": "Click “Convert”, your files will be saved automatically after conversion", "total": "{{number}} item", "failed": "Failed {{number}}", "fileName": "File Name", "resolution": "Resolution", "duration": "Duration", "original": "Original", "output": "Output", "addFiles": "Add Files", "clear": "Clear", "outputFormat": "Output", "searchPlaceholder": "Search Format", "all": "All", "video": "Video", "audio": "Audio", "convert": "Convert", "converting": "Converting", "completed": "Completed", "clearModal": { "title": "Files are converting. Clear the list?", "cancel": "Cancel", "clear": "Clear" } };
 const merge$d = { "noData": "Select files or drag files here", "selectFiles": "Select files", "fileName": "File Name", "duration": "Duration", "format": "Format", "video": "Video", "audio": "Audio", "subtitle": "Subtitle", "addFiles": "Add Files", "clear": "Clear", "needAddFile": "Please add a video file", "merge": "Merge", "merging": "Merging", "cancel": "Cancel", "failed": "Failed", "close": "Cancel", "retry": "Retry", "success": "Success", "saveTip": "has been saved", "view": "View", "viewInWin": "Show in Folder", "viewInMac": "Show in Finder", "mergePrefixName": "[Merged]" };
 const mainMenu$d = { "download": "Download", "online": "Online", "convert": "Convert", "audioVideoMerger": "Audio Video Merger", "joinTelegramGroup": "Join Telegram Group", "joinDiscordCommunity": "Join Discord Community" };
-const application$d = { "menu": { "download": "Download", "network": "Online", "format": "Convert", "merge": "Merge" }, "loading": "loading..." };
+const application$d = { "menu": { "download": "Download", "network": "Online", "format": "Convert", "merge": "Merge", "filesMerge": "Files Merge" }, "loading": "loading..." };
 const common$d = { "cancel": "Cancel", "ok": "Ok", "selectAll": "Select All", "cancelAll": "Deselect All" };
 const en = {
   download: download$d,
@@ -31040,6 +31060,7 @@ const en = {
   network: network$d,
   format: format$d,
   merge: merge$d,
+  filesMerge: filesMergeNs["en"],
   mainMenu: mainMenu$d,
   application: application$d,
   common: common$d
@@ -31057,7 +31078,7 @@ const settings$c = { "general": "General", "saveTo": "Guardar en", "changeFolder
 const taskModal$c = { "tip1": "Hay descargas incompletas. ¿Está seguro de que desea salir?", "confirmClose": "Cerrar aplicación", "continueDownload": "Continuar", "tip2": "Se encontraron descargas interrumpidas de la última vez. ¿Desea descargarlas ahora?", "cancelDownload": "Cancelar", "download": "Reanudar" };
 const update$c = { "newVersion": "Nueva versión", "newVersionAvailable": "Nueva versión disponible", "whatsNew": "Novedades", "upgradeNow": "Actualizar ahora", "downloading": "Descargando...", "remindAfterDownload": "Recordar después de la descarga", "newVersionReady": "Nueva versión lista", "installNow": "Instalar ahora", "remindLater": "Recordar más tarde", "installTip": "La nueva versión está lista. ¿Desea instalarla ahora?", "laterBtn": "Instalar más tarde", "downloadErrorTip": "Error en la descarga. Por favor, visite nuestro sitio web para descargar el paquete de instalación más reciente.", "nextUpdate": "Próxima actualización", "goWebsite": "Ir al sitio web" };
 const mainMenu$c = { "download": "Descargar", "online": "En línea", "convert": "Convertir", "audioVideoMerger": "Fusión de audio y vídeo", "joinTelegramGroup": "Unirse al grupo de Telegram", "joinDiscordCommunity": "Unirse a la comunidad de Discord" };
-const application$c = { "menu": { "download": "Descargar", "network": "En línea", "format": "Convertir", "merge": "Fusionar" }, "loading": "Cargando..." };
+const application$c = { "menu": { "download": "Descargar", "network": "En línea", "format": "Convertir", "merge": "Fusionar", "filesMerge": "Unir archivos" }, "loading": "Cargando..." };
 const common$c = { "cancel": "Cancelar", "ok": "Aceptar", "selectAll": "Seleccionar todo", "cancelAll": "Cancelar todo" };
 const merge$c = { "noData": "Selecciona los archivos o arrástralos aquí", "selectFiles": "Seleccionar Archivos", "fileName": "Nombre del Archivo", "duration": "Duración", "format": "Formato", "video": "Vídeo", "audio": "Audio", "subtitle": "Subtítulo", "addFiles": "Añadir Archivos", "clear": "Limpiar", "needAddFile": "Por favor, añade archivos de vídeo", "merge": "Fusionar", "merging": "Fusionando", "cancel": "Cancelar", "failed": "Error", "close": "Cerrar", "retry": "Reintentar", "success": "Éxito", "saveTip": "Guardado", "view": "Ver", "viewInWin": "Mostrar en Carpeta", "viewInMac": "Mostrar en Finder", "mergePrefixName": "[Fusionado]" };
 const network$c = { "search": "Buscar", "searchPlaceholder": "Buscar en el sitio web", "addSite": "Añadir sitio web", "go": "Ir", "noFilesFound": "No se encontraron archivos", "emptyTip1": "No hay archivos en este sitio web", "emptyTip2": "Añade un sitio web para comenzar", "resourceTitle": "Recursos", "all": "Todos({{number}})", "video": "Vídeo({{number}})", "audio": "Audio({{number}})", "selectAll": "Seleccionar todo", "download": "Descargar", "downloadTip": "Descargar", "downloadedTip": "Descargado", "previewTip": "Vista previa", "copyLinkTip": "Copiar enlace", "copyLinkSuccess": "Copiado", "live": "En vivo", "addSiteModal": { "title": "Añadir sitio web", "url": "URL", "urlPlaceholder": "Introduce la URL del sitio web", "add": "Añadir", "cancel": "Cancelar" } };
@@ -31079,6 +31100,7 @@ const es = {
   application: application$c,
   common: common$c,
   merge: merge$c,
+  filesMerge: filesMergeNs["es"],
   network: network$c,
   format: format$c
 };
@@ -31095,7 +31117,7 @@ const settings$b = { "general": "Général", "saveTo": "Enregistrer dans", "chan
 const taskModal$b = { "tip1": "Il y a des téléchargements en cours. Êtes-vous sûr de vouloir quitter ?", "confirmClose": "Fermer l'application", "continueDownload": "Continuer", "tip2": "Des téléchargements interrompus ont été détectés. Voulez-vous les reprendre maintenant ?", "cancelDownload": "Annuler", "download": "Reprendre" };
 const update$b = { "newVersion": "Nouvelle version", "newVersionAvailable": "Nouvelle version disponible", "whatsNew": "Nouveautés", "upgradeNow": "Mettre à jour maintenant", "downloading": "Téléchargement en cours...", "remindAfterDownload": "Rappeler après le téléchargement", "newVersionReady": "Nouvelle version prête", "installNow": "Installer maintenant", "remindLater": "Rappeler plus tard", "installTip": "La nouvelle version est prête. Voulez-vous l'installer maintenant ?", "laterBtn": "Installer plus tard", "downloadErrorTip": "Échec du téléchargement. Veuillez visiter notre site web pour télécharger le dernier package d'installation.", "nextUpdate": "Prochaine mise à jour", "goWebsite": "Aller sur le site web" };
 const mainMenu$b = { "download": "Télécharger", "online": "En ligne", "convert": "Convertir", "audioVideoMerger": "Fusion Audio Vidéo", "joinTelegramGroup": "Rejoindre le groupe Telegram", "joinDiscordCommunity": "Rejoindre la communauté Discord" };
-const application$b = { "menu": { "download": "Télécharger", "network": "En ligne", "format": "Convertir", "merge": "Fusionner" }, "loading": "Chargement..." };
+const application$b = { "menu": { "download": "Télécharger", "network": "En ligne", "format": "Convertir", "merge": "Fusionner", "filesMerge": "Fusionner les fichiers" }, "loading": "Chargement..." };
 const common$b = { "cancel": "Annuler", "ok": "OK", "selectAll": "Tout sélectionner", "cancelAll": "Tout annuler" };
 const merge$b = { "noData": "Sélectionnez les fichiers ou faites-les glisser ici", "selectFiles": "Sélectionner les Fichiers", "fileName": "Nom du Fichier", "duration": "Durée", "format": "Format", "video": "Vidéo", "audio": "Audio", "subtitle": "Sous-titre", "addFiles": "Ajouter des Fichiers", "clear": "Effacer", "needAddFile": "Veuillez ajouter des fichiers vidéo", "merge": "Fusionner", "merging": "Fusion en cours", "cancel": "Annuler", "failed": "Échec", "close": "Fermer", "retry": "Réessayer", "success": "Succès", "saveTip": "Enregistré", "view": "Voir", "viewInWin": "Afficher dans le dossier", "viewInMac": "Afficher dans le Finder", "mergePrefixName": "[Fusionné]" };
 const network$b = { "search": "Rechercher", "searchPlaceholder": "Rechercher sur le site web", "addSite": "Ajouter un site web", "go": "Aller", "noFilesFound": "Aucun fichier trouvé", "emptyTip1": "Aucun fichier sur ce site web", "emptyTip2": "Ajoutez un site web pour commencer", "resourceTitle": "Ressources", "all": "Tous({{number}})", "video": "Vidéo({{number}})", "audio": "Audio({{number}})", "selectAll": "Tout sélectionner", "download": "Télécharger", "downloadTip": "Télécharger", "downloadedTip": "Téléchargé", "previewTip": "Aperçu", "copyLinkTip": "Copier le lien", "copyLinkSuccess": "Copié", "live": "En direct", "addSiteModal": { "title": "Ajouter un site web", "url": "URL", "urlPlaceholder": "Entrez l'URL du site web", "add": "Ajouter", "cancel": "Annuler" } };
@@ -31117,6 +31139,7 @@ const fr$1 = {
   application: application$b,
   common: common$b,
   merge: merge$b,
+  filesMerge: filesMergeNs["fr"],
   network: network$b,
   format: format$b
 };
@@ -31133,7 +31156,7 @@ const settings$a = { "general": "सामान्य", "saveTo": "यहाँ
 const taskModal$a = { "tip1": "अधूरे डाउनलोड हैं। क्या आप वाकई बाहर निकलना चाहते हैं?", "confirmClose": "बाहर निकलें", "continueDownload": "डाउनलोड जारी रखें", "tip2": "पिछली बार के अधूरे डाउनलोड मिले हैं। क्या आप अभी डाउनलोड करना चाहते हैं?", "cancelDownload": "डाउनलोड रद्द करें", "download": "डाउनलोड जारी रखें" };
 const update$a = { "newVersion": "नया संस्करण", "newVersionAvailable": "नया संस्करण उपलब्ध है", "whatsNew": "नया क्या है", "upgradeNow": "अभी अपग्रेड करें", "downloading": "डाउनलोड हो रहा है...", "remindAfterDownload": "डाउनलोड के बाद याद दिलाएं", "newVersionReady": "नया संस्करण तैयार है", "installNow": "अभी स्थापित करें", "remindLater": "बाद में याद दिलाएं", "installTip": "नया संस्करण तैयार है। क्या आप इसे अभी स्थापित करना चाहते हैं?", "laterBtn": "बाद में स्थापित करें", "downloadErrorTip": "डाउनलोड विफल हुआ। कृपया नवीनतम इंस्टॉलेशन पैकेज डाउनलोड करने के लिए हमारी वेबसाइट पर जाएं।", "nextUpdate": "अगला अपडेट", "goWebsite": "वेबसाइट पर जाएं" };
 const mainMenu$a = { "download": "डाउनलोड", "online": "ऑनलाइन", "convert": "कन्वर्ट", "audioVideoMerger": "ऑडियो वीडियो मर्जर", "joinTelegramGroup": "टेलीग्राम ग्रुप में शामिल हों", "joinDiscordCommunity": "डिस्कॉर्ड समुदाय में शामिल हों" };
-const application$a = { "menu": { "download": "डाउनलोड", "network": "ऑनलाइन", "format": "कन्वर्ट", "merge": "मर्ज" }, "loading": "लोड हो रहा है..." };
+const application$a = { "menu": { "download": "डाउनलोड", "network": "ऑनलाइन", "format": "कन्वर्ट", "merge": "मर्ज", "filesMerge": "फ़ाइलें जोड़ें" }, "loading": "लोड हो रहा है..." };
 const common$a = { "cancel": "रद्द करें", "ok": "ठीक है", "selectAll": "सभी का चयन करें", "cancelAll": "सभी रद्द करें" };
 const merge$a = { "noData": "फ़ाइलें चुनें या यहाँ खींचें", "selectFiles": "फ़ाइलें चुनें", "fileName": "फ़ाइल का नाम", "duration": "अवधि", "format": "प्रारूप", "video": "वीडियो", "audio": "ऑडियो", "subtitle": "उपशीर्षक", "addFiles": "फ़ाइलें जोड़ें", "clear": "साफ़ करें", "needAddFile": "कृपया एक वीडियो फ़ाइल जोड़ें", "merge": "मर्ज करें", "merging": "मर्ज हो रहा है", "cancel": "रद्द करें", "failed": "विफल", "close": "रद्द करें", "retry": "पुनः प्रयास करें", "success": "सफल", "saveTip": "सहेजा गया है", "view": "देखें", "viewInWin": "फ़ोल्डर में दिखाएं", "viewInMac": "Finder में दिखाएं", "mergePrefixName": "[मर्ज किया गया]" };
 const network$a = { "search": "खोजें", "searchPlaceholder": "वेबसाइट पर खोजें", "addSite": "वेबसाइट जोड़ें", "go": "जाएं", "noFilesFound": "कोई फ़ाइल नहीं मिली", "emptyTip1": "इस वेबसाइट पर कोई फ़ाइल नहीं है", "emptyTip2": "शुरू करने के लिए एक वेबसाइट जोड़ें", "resourceTitle": "संसाधन", "all": "सभी({{number}})", "video": "वीडियो({{number}})", "audio": "ऑडियो({{number}})", "selectAll": "सभी चुनें", "download": "डाउनलोड", "downloadTip": "डाउनलोड", "downloadedTip": "डाउनलोड किया गया", "previewTip": "पूर्वावलोकन", "copyLinkTip": "लिंक कॉपी करें", "copyLinkSuccess": "कॉपी किया गया", "live": "लाइव", "addSiteModal": { "title": "वेबसाइट जोड़ें", "url": "URL", "urlPlaceholder": "वेबसाइट का URL दर्ज करें", "add": "जोड़ें", "cancel": "रद्द करें" } };
@@ -31155,6 +31178,7 @@ const hi = {
   application: application$a,
   common: common$a,
   merge: merge$a,
+  filesMerge: filesMergeNs["hi"],
   network: network$a,
   format: format$a
 };
@@ -31171,7 +31195,7 @@ const settings$9 = { "general": "Umum", "saveTo": "Simpan ke", "changeFolderBrow
 const taskModal$9 = { "tip1": "Ada unduhan yang belum selesai. Apakah Anda yakin ingin keluar?", "confirmClose": "Tutup aplikasi", "continueDownload": "Lanjutkan", "tip2": "Ditemukan unduhan yang terputus dari sebelumnya. Apakah Anda ingin mengunduhnya sekarang?", "cancelDownload": "Batalkan", "download": "Lanjutkan unduhan" };
 const update$9 = { "newVersion": "Versi baru", "newVersionAvailable": "Versi baru tersedia", "whatsNew": "Apa yang baru", "upgradeNow": "Perbarui sekarang", "downloading": "Mengunduh...", "remindAfterDownload": "Ingatkan setelah unduhan", "newVersionReady": "Versi baru siap", "installNow": "Instal sekarang", "remindLater": "Ingatkan nanti", "installTip": "Versi baru sudah siap. Apakah Anda ingin menginstalnya sekarang?", "laterBtn": "Instal nanti", "downloadErrorTip": "Unduhan gagal. Silakan kunjungi situs web kami untuk mengunduh paket instalasi terbaru.", "nextUpdate": "Pembaruan berikutnya", "goWebsite": "Kunjungi situs web" };
 const mainMenu$9 = { "download": "Unduh", "online": "Daring", "convert": "Konversi", "audioVideoMerger": "Penggabungan Audio Video", "joinTelegramGroup": "Gabung ke Grup Telegram", "joinDiscordCommunity": "Gabung ke Komunitas Discord" };
-const application$9 = { "menu": { "download": "Unduh", "network": "Daring", "format": "Konversi", "merge": "Gabung" }, "loading": "Memuat..." };
+const application$9 = { "menu": { "download": "Unduh", "network": "Daring", "format": "Konversi", "merge": "Gabung", "filesMerge": "Gabung File" }, "loading": "Memuat..." };
 const common$9 = { "cancel": "Batal", "ok": "OK", "selectAll": "Pilih Semua", "cancelAll": "Batalkan Semua" };
 const merge$9 = { "noData": "Pilih berkas atau seret ke sini", "selectFiles": "Pilih berkas", "fileName": "Nama berkas", "duration": "Durasi", "format": "Format", "video": "Video", "audio": "Audio", "subtitle": "Subtitle", "addFiles": "Tambah berkas", "clear": "Bersihkan", "needAddFile": "Silakan tambahkan berkas video", "merge": "Gabung", "merging": "Menggabungkan", "cancel": "Batal", "failed": "Gagal", "close": "Batal", "retry": "Coba Lagi", "success": "Berhasil", "saveTip": "telah disimpan", "view": "Lihat", "viewInWin": "Tampilkan di Folder", "viewInMac": "Tampilkan di Finder", "mergePrefixName": "[Digabung]" };
 const network$9 = { "search": "Cari", "searchPlaceholder": "Cari di situs web", "addSite": "Tambah situs web", "go": "Pergi", "noFilesFound": "Tidak ada file ditemukan", "emptyTip1": "Tidak ada file di situs web ini", "emptyTip2": "Tambahkan situs web untuk memulai", "resourceTitle": "Sumber Daya", "all": "Semua({{number}})", "video": "Video({{number}})", "audio": "Audio({{number}})", "selectAll": "Pilih Semua", "download": "Unduh", "downloadTip": "Unduh", "downloadedTip": "Diunduh", "previewTip": "Pratinjau", "copyLinkTip": "Salin Tautan", "copyLinkSuccess": "Tersalin", "live": "Siaran Langsung", "addSiteModal": { "title": "Tambah Situs Web", "url": "URL", "urlPlaceholder": "Masukkan URL situs web", "add": "Tambah", "cancel": "Batal" } };
@@ -31193,6 +31217,7 @@ const id = {
   application: application$9,
   common: common$9,
   merge: merge$9,
+  filesMerge: filesMergeNs["id"],
   network: network$9,
   format: format$9
 };
@@ -31209,7 +31234,7 @@ const settings$8 = { "general": "Generale", "saveTo": "Salva in", "changeFolderB
 const taskModal$8 = { "tip1": "Alcuni download sono ancora in corso. Sei sicuro di voler uscire?", "confirmClose": "Chiudi l'applicazione", "continueDownload": "Continua", "tip2": "Alcuni download sono stati interrotti l'ultima volta. Vuoi riprenderli?", "cancelDownload": "Annulla", "download": "Riprendi" };
 const update$8 = { "newVersion": "Nuova versione", "newVersionAvailable": "Nuova versione disponibile", "whatsNew": "Novità", "upgradeNow": "Aggiorna ora", "downloading": "Download in corso...", "remindAfterDownload": "Ricorda dopo il download", "newVersionReady": "Nuova versione pronta", "installNow": "Installa ora", "remindLater": "Ricorda più tardi", "installTip": "La nuova versione è pronta. Vuoi installarla ora?", "laterBtn": "Installa più tardi", "downloadErrorTip": "Download fallito. Visita il nostro sito web per scaricare l'ultimo pacchetto di installazione.", "nextUpdate": "Prossimo aggiornamento", "goWebsite": "Vai al sito web" };
 const mainMenu$8 = { "download": "Scarica", "online": "Online", "convert": "Converti", "audioVideoMerger": "Unione Audio Video", "joinTelegramGroup": "Unisciti al Gruppo Telegram", "joinDiscordCommunity": "Unisciti alla Comunità Discord" };
-const application$8 = { "menu": { "download": "Scarica", "network": "Online", "format": "Converti", "merge": "Unisci" }, "loading": "Caricamento in corso..." };
+const application$8 = { "menu": { "download": "Scarica", "network": "Online", "format": "Converti", "merge": "Unisci", "filesMerge": "Unisci file" }, "loading": "Caricamento in corso..." };
 const common$8 = { "cancel": "Annulla", "ok": "OK", "selectAll": "Seleziona Tutto", "cancelAll": "Annulla Tutto" };
 const merge$8 = { "noData": "Seleziona i file o trascinali qui", "selectFiles": "Seleziona File", "fileName": "Nome File", "duration": "Durata", "format": "Formato", "video": "Video", "audio": "Audio", "subtitle": "Sottotitolo", "addFiles": "Aggiungi File", "clear": "Pulisci", "needAddFile": "Per favore, aggiungi file video", "merge": "Unisci", "merging": "Unione in corso", "cancel": "Annulla", "failed": "Fallito", "close": "Chiudi", "retry": "Riprova", "success": "Successo", "saveTip": "Salvato", "view": "Visualizza", "viewInWin": "Mostra nella Cartella", "viewInMac": "Mostra nel Finder", "mergePrefixName": "[Unito]" };
 const network$8 = { "search": "Cerca", "searchPlaceholder": "Cerca nel sito web", "addSite": "Aggiungi sito web", "go": "Vai", "noFilesFound": "Nessun file trovato", "emptyTip1": "Non ci sono file su questo sito web", "emptyTip2": "Aggiungi un sito web per iniziare", "resourceTitle": "Risorse", "all": "Tutti({{number}})", "video": "Video({{number}})", "audio": "Audio({{number}})", "selectAll": "Seleziona tutto", "download": "Scarica", "downloadTip": "Scarica", "downloadedTip": "Scaricato", "previewTip": "Anteprima", "copyLinkTip": "Copia link", "copyLinkSuccess": "Copiato", "live": "In diretta", "addSiteModal": { "title": "Aggiungi sito web", "url": "URL", "urlPlaceholder": "Inserisci l'URL del sito web", "add": "Aggiungi", "cancel": "Annulla" } };
@@ -31231,6 +31256,7 @@ const it = {
   application: application$8,
   common: common$8,
   merge: merge$8,
+  filesMerge: filesMergeNs["it"],
   network: network$8,
   format: format$8
 };
@@ -31247,7 +31273,7 @@ const menu$7 = { "website": "公式サイト", "settings": "設定" };
 const settings$7 = { "general": "一般", "saveTo": "ダウンロード先", "changeFolderBrowser": "フォルダを変更", "language": "言語", "system": "システム", "createSubdirectoriesForDownloadedPlaylistsAndChannels": "プレイリスト/チャンネル名でサブフォルダを作成", "numerateFilesInPlaylistsAndChannels": "プレイリストおよびチャンネルのファイルに番号を付ける", "embedSubtitlesInVideoFile": "動画ファイルに字幕を埋め込む", "useGoSnapfile": "元の snapfile (Go) を使用", "authorization": "認証", "logOut": "ログアウト", "logIn": "ログイン", "delete": "削除", "addUrl": "URLを追加", "enterTheWebsiteUrl": "ウェブサイトのURLを入力", "authorizationPanelTips": "ウェブサイトにログインすると、年齢制限付きコンテンツ、購入済みのメンバーシップコンテンツ、その他のプライベートコンテンツをダウンロードできます。", "proxy": "プロキシ", "proxyType": "プロキシの種類", "httpProxy": "HTTPプロキシ", "socks5Proxy": "SOCKS5プロキシ", "usingSystemProxy": "システムプロキシを使用", "notUsingProxy": "プロキシを使用しない", "host": "ホスト", "port": "ポート", "proxyInfoMessage": { "pleaseEnterProxyHost": "プロキシホストアドレスを入力してください", "pleaseEnterValidProxyHost": "有効なホストアドレスを入力してください", "pleaseEnterProxyPort": "プロキシポートを入力してください", "pleaseEnterValidProxyPort": "有効なポート番号（1〜65535）を入力してください", "optional": "オプション" }, "login": "ユーザー名", "password": "パスワード", "save": "保存", "saved": "保存しました", "about": "アプリについて", "version": "バージョン", "componentVersion": "コンポーネントバージョン", "update": "更新中...", "updateErrorAndRetry": "更新に失敗しました。クリックして再試行", "latestVersion": "最新バージョン", "upgrade": "今すぐアップグレード", "message": { "loadSettingsFailed": "設定の読み込みに失敗しました" }, "checkVersion": "バージョンを確認", "latestVersionAvailable": "最新バージョンが見つかりました", "latestVersionNotAvailable": "すでに最新バージョンです", "testConnection": "接続をテスト", "testConnectionTip": "接続をテスト中", "testConnectionSuccess": "接続成功！", "testConnectionFailed": "接続失敗、プロキシ設定を確認してください" };
 const update$7 = { "newVersion": "新バージョン", "newVersionAvailable": "新バージョンが利用可能", "whatsNew": "更新内容", "upgradeNow": "アップデートをインストール", "downloading": "アップデートをダウンロード中...", "remindAfterDownload": "後で通知", "newVersionReady": "新バージョンの準備が完了", "installNow": "今すぐインストール", "remindLater": "後で通知", "installTip": "新バージョンの準備が完了しました。今すぐインストールしますか？", "laterBtn": "後でインストール", "downloadErrorTip": "ダウンロードに失敗しました。公式サイトから最新のインストールパッケージをダウンロードしてください。", "nextUpdate": "次回の更新", "goWebsite": "公式サイトへ" };
 const mainMenu$7 = { "download": "リンクダウンロード", "online": "ブラウザ検出", "convert": "フォーマット変換", "audioVideoMerger": "音声・動画の結合", "joinTelegramGroup": "Telegramグループに参加", "joinDiscordCommunity": "Discordコミュニティに参加" };
-const application$7 = { "menu": { "download": "ダウンロード", "network": "オンライン", "format": "変換", "merge": "結合" }, "loading": "読み込み中..." };
+const application$7 = { "menu": { "download": "ダウンロード", "network": "オンライン", "format": "変換", "merge": "結合", "filesMerge": "ファイル結合" }, "loading": "読み込み中..." };
 const common$7 = { "cancel": "キャンセル", "ok": "OK", "selectAll": "すべて選択", "cancelAll": "すべてキャンセル" };
 const merge$7 = { "noData": "ファイルを選択するか、ここにドラッグしてください", "selectFiles": "ファイルを選択", "fileName": "ファイル名", "duration": "長さ", "format": "フォーマット", "video": "動画", "audio": "音声", "subtitle": "字幕", "addFiles": "ファイルを追加", "clear": "クリア", "needAddFile": "動画ファイルを追加してください", "merge": "結合", "merging": "結合中", "cancel": "キャンセル", "failed": "失敗", "close": "閉じる", "retry": "再試行", "success": "成功", "saveTip": "保存しました", "view": "表示", "viewInWin": "フォルダで表示", "viewInMac": "Finderで表示", "mergePrefixName": "[結合済み]" };
 const network$7 = { "search": "検索", "searchPlaceholder": "ウェブサイトで検索", "addSite": "ウェブサイトを追加", "go": "移動", "noFilesFound": "ファイルが見つかりません", "emptyTip1": "このウェブサイトにファイルがありません", "emptyTip2": "開始するにはウェブサイトを追加してください", "resourceTitle": "リソース", "all": "すべて({{number}})", "video": "動画({{number}})", "audio": "音声({{number}})", "selectAll": "すべて選択", "download": "ダウンロード", "downloadTip": "ダウンロード", "downloadedTip": "ダウンロード済み", "previewTip": "プレビュー", "copyLinkTip": "リンクをコピー", "copyLinkSuccess": "コピーしました", "live": "ライブ", "addSiteModal": { "title": "ウェブサイトを追加", "url": "URL", "urlPlaceholder": "ウェブサイトのURLを入力", "add": "追加", "cancel": "キャンセル" } };
@@ -31269,6 +31295,7 @@ const ja = {
   application: application$7,
   common: common$7,
   merge: merge$7,
+  filesMerge: filesMergeNs["ja"],
   network: network$7,
   format: format$7
 };
@@ -31285,7 +31312,7 @@ const menu$6 = { "website": "공식 웹사이트", "settings": "설정" };
 const settings$6 = { "general": "일반", "saveTo": "다운로드 위치", "changeFolderBrowser": "폴더 변경", "language": "언어", "system": "시스템", "createSubdirectoriesForDownloadedPlaylistsAndChannels": "재생목록/채널 이름으로 하위 폴더 생성", "numerateFilesInPlaylistsAndChannels": "재생목록 및 채널 내 파일 번호 매기기", "embedSubtitlesInVideoFile": "영상 파일에 자막 삽입", "useGoSnapfile": "원본 snapfile (Go) 사용", "authorization": "인증", "logOut": "로그아웃", "logIn": "로그인", "delete": "삭제", "addUrl": "URL 추가", "enterTheWebsiteUrl": "웹사이트 URL 입력", "authorizationPanelTips": "웹사이트에 로그인하면 연령 제한 콘텐츠, 구매한 멤버십 콘텐츠 및 기타 비공개 콘텐츠를 다운로드할 수 있습니다.", "proxy": "프록시", "proxyType": "프록시 유형", "httpProxy": "HTTP 프록시", "socks5Proxy": "SOCKS5 프록시", "usingSystemProxy": "시스템 프록시 사용", "notUsingProxy": "프록시 사용 안 함", "host": "호스트", "port": "포트", "proxyInfoMessage": { "pleaseEnterProxyHost": "프록시 호스트 주소를 입력하세요", "pleaseEnterValidProxyHost": "유효한 호스트 주소를 입력하세요", "pleaseEnterProxyPort": "프록시 포트를 입력하세요", "pleaseEnterValidProxyPort": "유효한 포트 번호를 입력하세요 (1-65535)", "optional": "선택 사항" }, "login": "사용자 이름", "password": "비밀번호", "save": "저장", "saved": "저장되었습니다", "about": "정보", "version": "버전", "componentVersion": "컴포넌트 버전", "update": "업데이트 중...", "updateErrorAndRetry": "업데이트 실패. 클릭하여 다시 시도", "latestVersion": "최신 버전", "upgrade": "지금 업그레이드", "message": { "loadSettingsFailed": "설정 로드 실패" }, "checkVersion": "버전 확인", "latestVersionAvailable": "최신 버전 발견", "latestVersionNotAvailable": "이미 최신 버전입니다", "testConnection": "연결 테스트", "testConnectionTip": "연결 테스트 중", "testConnectionSuccess": "연결 성공!", "testConnectionFailed": "연결 실패, 프록시 설정을 확인하세요" };
 const update$6 = { "newVersion": "새 버전", "newVersionAvailable": "새 버전 사용 가능", "whatsNew": "업데이트 내용", "upgradeNow": "업데이트 설치", "downloading": "업데이트 다운로드 중...", "remindAfterDownload": "나중에 알림", "newVersionReady": "새 버전 준비 완료", "installNow": "지금 설치", "remindLater": "나중에 알림", "installTip": "새 버전이 준비되었습니다. 지금 설치하시겠습니까?", "laterBtn": "나중에 설치", "downloadErrorTip": "다운로드에 실패했습니다. 웹사이트에서 최신 설치 패키지를 다운로드해 주세요.", "nextUpdate": "다음 업데이트", "goWebsite": "웹사이트로 이동" };
 const mainMenu$6 = { "download": "링크 다운로드", "online": "브라우저 감지", "convert": "형식 변환", "audioVideoMerger": "음성 및 영상 병합", "joinTelegramGroup": "텔레그램 그룹 가입", "joinDiscordCommunity": "디스코드 커뮤니티 가입" };
-const application$6 = { "menu": { "download": "다운로드", "network": "온라인", "format": "변환", "merge": "병합" }, "loading": "로딩 중..." };
+const application$6 = { "menu": { "download": "다운로드", "network": "온라인", "format": "변환", "merge": "병합", "filesMerge": "파일 합치기" }, "loading": "로딩 중..." };
 const common$6 = { "cancel": "취소", "ok": "확인", "selectAll": "모두 선택", "cancelAll": "모두 취소" };
 const merge$6 = { "noData": "파일을 선택하거나 여기에 드래그하세요", "selectFiles": "파일 선택", "fileName": "파일 이름", "duration": "길이", "format": "형식", "video": "비디오", "audio": "오디오", "subtitle": "자막", "addFiles": "파일 추가", "clear": "지우기", "needAddFile": "비디오 파일을 추가해 주세요", "merge": "병합", "merging": "병합 중", "cancel": "취소", "failed": "실패", "close": "취소", "retry": "다시 시도", "success": "성공", "saveTip": "저장됨", "view": "보기", "viewInWin": "폴더에서 보기", "viewInMac": "Finder에서 보기", "mergePrefixName": "[병합됨]" };
 const network$6 = { "search": "검색", "searchPlaceholder": "웹사이트에서 검색", "addSite": "웹사이트 추가", "go": "이동", "noFilesFound": "파일을 찾을 수 없습니다", "emptyTip1": "이 웹사이트에 파일이 없습니다", "emptyTip2": "시작하려면 웹사이트를 추가하세요", "resourceTitle": "리소스", "all": "전체({{number}})", "video": "비디오({{number}})", "audio": "오디오({{number}})", "selectAll": "전체 선택", "download": "다운로드", "downloadTip": "다운로드", "downloadedTip": "다운로드됨", "previewTip": "미리보기", "copyLinkTip": "링크 복사", "copyLinkSuccess": "복사됨", "live": "라이브", "addSiteModal": { "title": "웹사이트 추가", "url": "URL", "urlPlaceholder": "웹사이트 URL 입력", "add": "추가", "cancel": "취소" } };
@@ -31307,6 +31334,7 @@ const ko$1 = {
   application: application$6,
   common: common$6,
   merge: merge$6,
+  filesMerge: filesMergeNs["ko"],
   network: network$6,
   format: format$6
 };
@@ -31323,7 +31351,7 @@ const menu$5 = { "website": "Site Oficial", "settings": "Configurações" };
 const settings$5 = { "general": "Geral", "saveTo": "Local de Download", "changeFolderBrowser": "Alterar Pasta", "language": "Idioma", "system": "Sistema", "createSubdirectoriesForDownloadedPlaylistsAndChannels": "Criar subpastas com nome da playlist/canal", "numerateFilesInPlaylistsAndChannels": "Numerar arquivos em playlists e canais", "embedSubtitlesInVideoFile": "Incorporar legendas no arquivo de vídeo", "useGoSnapfile": "Usar snapfile original (Go)", "authorization": "Autorização", "logOut": "Sair", "logIn": "Entrar", "delete": "Excluir", "addUrl": "Adicionar URL", "enterTheWebsiteUrl": "Digite a URL do site", "authorizationPanelTips": "Fazer login no site permite baixar conteúdos com restrição de idade, conteúdos de assinatura que você adquiriu e outros conteúdos privados.", "proxy": "Proxy", "proxyType": "Tipo de Proxy", "httpProxy": "Proxy HTTP", "socks5Proxy": "Proxy SOCKS5", "usingSystemProxy": "Usando Proxy do Sistema", "notUsingProxy": "Não Usando Proxy", "host": "Host", "port": "Porta", "proxyInfoMessage": { "pleaseEnterProxyHost": "Por favor, insira o endereço do host do proxy", "pleaseEnterValidProxyHost": "Por favor, insira um endereço de host válido", "pleaseEnterProxyPort": "Por favor, insira a porta do proxy", "pleaseEnterValidProxyPort": "Por favor, insira um número de porta válido (1-65535)", "optional": "Opcional" }, "login": "Nome de usuário", "password": "Senha", "save": "Salvar", "saved": "Salvo", "about": "Sobre", "version": "Versão", "componentVersion": "Versão do componente", "update": "Atualizando...", "updateErrorAndRetry": "Falha na atualização. Clique para tentar novamente", "latestVersion": "Última Versão", "upgrade": "Atualizar Agora", "message": { "loadSettingsFailed": "Falha ao carregar configurações" }, "checkVersion": "Verificar Versão", "latestVersionAvailable": "Nova versão encontrada", "latestVersionNotAvailable": "Já está na versão mais recente", "testConnection": "Testar conexão", "testConnectionTip": "Testando conexão", "testConnectionSuccess": "Conexão bem-sucedida!", "testConnectionFailed": "Falha na conexão, verifique as configurações do proxy" };
 const update$5 = { "newVersion": "Nova versão", "newVersionAvailable": "Nova versão disponível", "whatsNew": "Conteúdo da atualização", "upgradeNow": "Instalar atualização", "downloading": "Baixando atualização...", "remindAfterDownload": "Lembrar depois", "newVersionReady": "Nova versão está pronta", "installNow": "Instalar agora", "remindLater": "Lembrar depois", "installTip": "A nova versão está pronta. Deseja instalá-la agora?", "laterBtn": "Instalar depois", "downloadErrorTip": "Falha no download. Por favor, visite nosso site para baixar o pacote de instalação mais recente.", "nextUpdate": "Próxima atualização", "goWebsite": "Ir para o site" };
 const mainMenu$5 = { "download": "Download de Link", "online": "Detecção de Navegador", "convert": "Conversão de Formato", "audioVideoMerger": "Mesclador de Áudio e Vídeo", "joinTelegramGroup": "Entrar no Grupo do Telegram", "joinDiscordCommunity": "Entrar na Comunidade do Discord" };
-const application$5 = { "menu": { "download": "Baixar", "network": "Online", "format": "Converter", "merge": "Mesclar" }, "loading": "Carregando..." };
+const application$5 = { "menu": { "download": "Baixar", "network": "Online", "format": "Converter", "merge": "Mesclar", "filesMerge": "Juntar arquivos" }, "loading": "Carregando..." };
 const common$5 = { "cancel": "Cancelar", "ok": "OK", "selectAll": "Selecionar Tudo", "cancelAll": "Cancelar Tudo" };
 const merge$5 = { "noData": "Selecione os arquivos ou arraste-os aqui", "selectFiles": "Selecionar Arquivos", "fileName": "Nome do Arquivo", "duration": "Duração", "format": "Formato", "video": "Vídeo", "audio": "Áudio", "subtitle": "Legenda", "addFiles": "Adicionar Arquivos", "clear": "Limpar", "needAddFile": "Por favor, adicione arquivos de vídeo", "merge": "Mesclar", "merging": "Mesclando", "cancel": "Cancelar", "failed": "Falhou", "close": "Fechar", "retry": "Tentar Novamente", "success": "Sucesso", "saveTip": "Salvo", "view": "Visualizar", "viewInWin": "Mostrar na Pasta", "viewInMac": "Mostrar no Finder", "mergePrefixName": "[Mesclado]" };
 const network$5 = { "search": "Pesquisar", "searchPlaceholder": "Pesquisar no site", "addSite": "Adicionar site", "go": "Ir", "noFilesFound": "Nenhum arquivo encontrado", "emptyTip1": "Não há arquivos neste site", "emptyTip2": "Adicione um site para começar", "resourceTitle": "Recursos", "all": "Todos({{number}})", "video": "Vídeo({{number}})", "audio": "Áudio({{number}})", "selectAll": "Selecionar todos", "download": "Baixar", "downloadTip": "Baixar", "downloadedTip": "Baixado", "previewTip": "Visualizar", "copyLinkTip": "Copiar link", "copyLinkSuccess": "Copiado", "live": "Ao vivo", "addSiteModal": { "title": "Adicionar site", "url": "URL", "urlPlaceholder": "Digite a URL do site", "add": "Adicionar", "cancel": "Cancelar" } };
@@ -31345,6 +31373,7 @@ const pt$1 = {
   application: application$5,
   common: common$5,
   merge: merge$5,
+  filesMerge: filesMergeNs["pt"],
   network: network$5,
   format: format$5
 };
@@ -31361,7 +31390,7 @@ const menu$4 = { "website": "Официальный сайт", "settings": "На
 const settings$4 = { "general": "Общие", "saveTo": "Место загрузки", "changeFolderBrowser": "Изменить папку", "language": "Язык", "system": "Система", "createSubdirectoriesForDownloadedPlaylistsAndChannels": "Создавать подпапки по имени плейлиста/канала", "numerateFilesInPlaylistsAndChannels": "Нумеровать файлы в плейлистах и каналах", "embedSubtitlesInVideoFile": "Встраивать субтитры в видеофайл", "useGoSnapfile": "Использовать оригинальный snapfile (Go)", "authorization": "Авторизация", "logOut": "Выйти", "logIn": "Войти", "delete": "Удалить", "addUrl": "Добавить URL", "enterTheWebsiteUrl": "Введите URL сайта", "authorizationPanelTips": "Вход на сайт позволяет загружать контент с возрастным ограничением, купленный премиум-контент и другой приватный контент.", "proxy": "Прокси", "proxyType": "Тип прокси", "httpProxy": "HTTP прокси", "socks5Proxy": "SOCKS5 прокси", "usingSystemProxy": "Использовать системный прокси", "notUsingProxy": "Не использовать прокси", "host": "Хост", "port": "Порт", "proxyInfoMessage": { "pleaseEnterProxyHost": "Пожалуйста, введите адрес прокси-хоста", "pleaseEnterValidProxyHost": "Пожалуйста, введите действительный адрес хоста", "pleaseEnterProxyPort": "Пожалуйста, введите порт прокси", "pleaseEnterValidProxyPort": "Пожалуйста, введите действительный номер порта (1-65535)", "optional": "Необязательно" }, "login": "Имя пользователя", "password": "Пароль", "save": "Сохранить", "saved": "Сохранено", "about": "О программе", "version": "Версия", "componentVersion": "Версия компонентов", "update": "Обновление...", "updateErrorAndRetry": "Ошибка обновления. Нажмите, чтобы повторить", "latestVersion": "Последняя версия", "upgrade": "Обновить сейчас", "message": { "loadSettingsFailed": "Ошибка загрузки настроек" }, "checkVersion": "Проверить версию", "latestVersionAvailable": "Найдена новая версия", "latestVersionNotAvailable": "У вас уже установлена последняя версия", "testConnection": "Проверить соединение", "testConnectionTip": "Проверка соединения", "testConnectionSuccess": "Соединение успешно!", "testConnectionFailed": "Ошибка соединения, проверьте настройки прокси" };
 const update$4 = { "newVersion": "Новая версия", "newVersionAvailable": "Доступна новая версия", "whatsNew": "Что нового", "upgradeNow": "Установить обновление", "downloading": "Загрузка обновления...", "remindAfterDownload": "Напомнить позже", "newVersionReady": "Новая версия готова", "installNow": "Установить сейчас", "remindLater": "Напомнить позже", "installTip": "Новая версия готова. Хотите установить её сейчас?", "laterBtn": "Установить позже", "downloadErrorTip": "Ошибка загрузки. Пожалуйста, посетите наш сайт, чтобы скачать последний пакет установки.", "nextUpdate": "Следующее обновление", "goWebsite": "Перейти на сайт" };
 const mainMenu$4 = { "download": "Загрузка по ссылке", "online": "Отслеживание браузера", "convert": "Конвертация формата", "audioVideoMerger": "Объединение аудио и видео", "joinTelegramGroup": "Присоединиться к группе Telegram", "joinDiscordCommunity": "Присоединиться к сообществу Discord" };
-const application$4 = { "menu": { "download": "Скачать", "network": "Онлайн", "format": "Конвертировать", "merge": "Объединить" }, "loading": "Загрузка..." };
+const application$4 = { "menu": { "download": "Скачать", "network": "Онлайн", "format": "Конвертировать", "merge": "Объединить", "filesMerge": "Склейка файлов" }, "loading": "Загрузка..." };
 const common$4 = { "cancel": "Отмена", "ok": "ОК", "selectAll": "Выбрать все", "cancelAll": "Отменить все" };
 const merge$4 = { "noData": "Выберите файлы или перетащите их сюда", "selectFiles": "Выбрать Файлы", "fileName": "Имя Файла", "duration": "Длительность", "format": "Формат", "video": "Видео", "audio": "Аудио", "subtitle": "Субтитры", "addFiles": "Добавить Файлы", "clear": "Очистить", "needAddFile": "Пожалуйста, добавьте видеофайлы", "merge": "Объединить", "merging": "Объединение", "cancel": "Отмена", "failed": "Ошибка", "close": "Закрыть", "retry": "Повторить", "success": "Успешно", "saveTip": "Сохранено", "view": "Просмотр", "viewInWin": "Показать в папке", "viewInMac": "Показать в Finder", "mergePrefixName": "[Объединено]" };
 const network$4 = { "search": "Поиск", "searchPlaceholder": "Поиск на сайте", "addSite": "Добавить сайт", "go": "Перейти", "noFilesFound": "Файлы не найдены", "emptyTip1": "На этом сайте нет файлов", "emptyTip2": "Добавьте сайт, чтобы начать", "resourceTitle": "Ресурсы", "all": "Все({{number}})", "video": "Видео({{number}})", "audio": "Аудио({{number}})", "selectAll": "Выбрать все", "download": "Скачать", "downloadTip": "Скачать", "downloadedTip": "Скачано", "previewTip": "Предпросмотр", "copyLinkTip": "Копировать ссылку", "copyLinkSuccess": "Скопировано", "live": "Прямой эфир", "addSiteModal": { "title": "Добавить сайт", "url": "URL", "urlPlaceholder": "Введите URL сайта", "add": "Добавить", "cancel": "Отмена" } };
@@ -31383,6 +31412,7 @@ const ru = {
   application: application$4,
   common: common$4,
   merge: merge$4,
+  filesMerge: filesMergeNs["ru"],
   network: network$4,
   format: format$4
 };
@@ -31399,7 +31429,7 @@ const menu$3 = { "website": "Resmi Web Sitesi", "settings": "Ayarlar" };
 const settings$3 = { "general": "Genel", "saveTo": "İndirme Konumu", "changeFolderBrowser": "Klasör Değiştir", "language": "Dil", "system": "Sistem", "createSubdirectoriesForDownloadedPlaylistsAndChannels": "Çalma listesi/kanal adına göre alt klasörler oluştur", "numerateFilesInPlaylistsAndChannels": "Çalma listeleri ve kanallardaki dosyaları numaralandır", "embedSubtitlesInVideoFile": "Altyazıları video dosyasına göm", "useGoSnapfile": "Orijinal snapfile (Go) kullan", "authorization": "Yetkilendirme", "logOut": "Çıkış Yap", "logIn": "Giriş Yap", "delete": "Sil", "addUrl": "URL Ekle", "enterTheWebsiteUrl": "Web sitesi URL'sini girin", "authorizationPanelTips": "Web sitesine giriş yapmak, yaş kısıtlamalı içeriği, satın aldığınız üyelik içeriğini ve diğer özel içeriği indirmenize olanak tanır.", "proxy": "Proxy", "proxyType": "Proxy Türü", "httpProxy": "HTTP Proxy", "socks5Proxy": "SOCKS5 Proxy", "usingSystemProxy": "Sistem Proxy'sini Kullan", "notUsingProxy": "Proxy Kullanma", "host": "Sunucu", "port": "Port", "proxyInfoMessage": { "pleaseEnterProxyHost": "Lütfen proxy sunucu adresini girin", "pleaseEnterValidProxyHost": "Lütfen geçerli bir host adresi girin", "pleaseEnterProxyPort": "Lütfen proxy portunu girin", "pleaseEnterValidProxyPort": "Lütfen geçerli bir port numarası girin (1-65535)", "optional": "İsteğe bağlı" }, "login": "Kullanıcı Adı", "password": "Şifre", "save": "Kaydet", "saved": "Kaydedildi", "about": "Hakkında", "version": "Sürüm", "componentVersion": "Bileşen Sürümü", "update": "Güncelleniyor...", "updateErrorAndRetry": "Güncelleme başarısız. Yeniden denemek için tıklayın", "latestVersion": "En Son Sürüm", "upgrade": "Hemen Güncelle", "message": { "loadSettingsFailed": "Ayarlar yüklenemedi" }, "checkVersion": "Sürümü Kontrol Et", "latestVersionAvailable": "Yeni sürüm mevcut", "latestVersionNotAvailable": "Zaten en son sürüm", "testConnection": "Bağlantıyı test et", "testConnectionTip": "Bağlantı test ediliyor", "testConnectionSuccess": "Bağlantı başarılı!", "testConnectionFailed": "Bağlantı başarısız, proxy ayarlarını kontrol edin" };
 const update$3 = { "newVersion": "Yeni sürüm", "newVersionAvailable": "Yeni sürüm mevcut", "whatsNew": "Güncelleme İçeriği", "upgradeNow": "Güncellemeyi Yükle", "downloading": "Güncelleme indiriliyor...", "remindAfterDownload": "Daha sonra hatırlat", "newVersionReady": "Yeni sürüm hazır", "installNow": "Şimdi yükle", "remindLater": "Daha sonra hatırlat", "installTip": "Yeni sürüm hazır. Şimdi yüklemek ister misiniz?", "laterBtn": "Daha sonra yükle", "downloadErrorTip": "İndirme başarısız oldu. Lütfen en son kurulum paketini indirmek için web sitemizi ziyaret edin.", "nextUpdate": "Sonraki güncelleme", "goWebsite": "Web sitesine git" };
 const mainMenu$3 = { "download": "Bağlantı İndirme", "online": "Tarayıcı Algılama", "convert": "Format Dönüştürme", "audioVideoMerger": "Ses ve Video Birleştirme", "joinTelegramGroup": "Telegram Grubuna Katıl", "joinDiscordCommunity": "Discord Topluluğuna Katıl" };
-const application$3 = { "menu": { "download": "İndir", "network": "Online", "format": "Dönüştür", "merge": "Birleştir" }, "loading": "Yükleniyor..." };
+const application$3 = { "menu": { "download": "İndir", "network": "Online", "format": "Dönüştür", "merge": "Birleştir", "filesMerge": "Dosya Birleştir" }, "loading": "Yükleniyor..." };
 const common$3 = { "cancel": "İptal", "ok": "Tamam", "selectAll": "Tümünü Seç", "cancelAll": "Tümünü İptal Et" };
 const merge$3 = { "noData": "Dosyaları seçin veya buraya sürükleyin", "selectFiles": "Dosyaları Seç", "fileName": "Dosya Adı", "duration": "Süre", "format": "Format", "video": "Video", "audio": "Ses", "subtitle": "Altyazı", "addFiles": "Dosya Ekle", "clear": "Temizle", "needAddFile": "Lütfen video dosyaları ekleyin", "merge": "Birleştir", "merging": "Birleştiriliyor", "cancel": "İptal", "failed": "Başarısız", "close": "Kapat", "retry": "Tekrar Dene", "success": "Başarılı", "saveTip": "Kaydedildi", "view": "Görüntüle", "viewInWin": "Klasörde Göster", "viewInMac": "Finder'da Göster", "mergePrefixName": "[Birleştirildi]" };
 const network$3 = { "search": "Ara", "searchPlaceholder": "Sitede ara", "addSite": "Site ekle", "go": "Git", "noFilesFound": "Dosya bulunamadı", "emptyTip1": "Bu sitede dosya yok", "emptyTip2": "Başlamak için bir site ekleyin", "resourceTitle": "Kaynaklar", "all": "Tümü({{number}})", "video": "Video({{number}})", "audio": "Ses({{number}})", "selectAll": "Tümünü seç", "download": "İndir", "downloadTip": "İndir", "downloadedTip": "İndirildi", "previewTip": "Önizleme", "copyLinkTip": "Bağlantıyı kopyala", "copyLinkSuccess": "Kopyalandı", "live": "Canlı", "addSiteModal": { "title": "Site ekle", "url": "URL", "urlPlaceholder": "Site URL'sini girin", "add": "Ekle", "cancel": "İptal" } };
@@ -31421,6 +31451,7 @@ const tr$1 = {
   application: application$3,
   common: common$3,
   merge: merge$3,
+  filesMerge: filesMergeNs["tr"],
   network: network$3,
   format: format$3
 };
@@ -31437,7 +31468,7 @@ const menu$2 = { "website": "Trang web chính thức", "settings": "Cài đặt"
 const settings$2 = { "general": "Chung", "saveTo": "Vị trí tải xuống", "changeFolderBrowser": "Thay đổi thư mục", "language": "Ngôn ngữ", "system": "Hệ thống", "createSubdirectoriesForDownloadedPlaylistsAndChannels": "Tạo thư mục con theo tên danh sách phát/kênh", "numerateFilesInPlaylistsAndChannels": "Đánh số tệp trong danh sách phát và kênh", "embedSubtitlesInVideoFile": "Nhúng phụ đề vào tệp video", "useGoSnapfile": "Sử dụng snapfile gốc (Go)", "authorization": "Ủy quyền", "logOut": "Đăng xuất", "logIn": "Đăng nhập", "delete": "Xóa", "addUrl": "Thêm URL", "enterTheWebsiteUrl": "Nhập URL trang web", "authorizationPanelTips": "Đăng nhập vào trang web cho phép tải xuống nội dung giới hạn độ tuổi, nội dung thành viên bạn đã mua và nội dung riêng tư khác.", "proxy": "Proxy", "proxyType": "Loại proxy", "httpProxy": "Proxy HTTP", "socks5Proxy": "Proxy SOCKS5", "usingSystemProxy": "Sử dụng Proxy hệ thống", "notUsingProxy": "Không sử dụng Proxy", "host": "Máy chủ", "port": "Cổng", "proxyInfoMessage": { "pleaseEnterProxyHost": "Vui lòng nhập địa chỉ máy chủ proxy", "pleaseEnterValidProxyHost": "Vui lòng nhập địa chỉ máy chủ hợp lệ", "pleaseEnterProxyPort": "Vui lòng nhập cổng proxy", "pleaseEnterValidProxyPort": "Vui lòng nhập số cổng hợp lệ (1-65535)", "optional": "Tùy chọn" }, "login": "Tên người dùng", "password": "Mật khẩu", "save": "Lưu", "saved": "Đã lưu", "about": "Giới thiệu", "version": "Phiên bản", "componentVersion": "Phiên bản thành phần", "update": "Đang cập nhật...", "updateErrorAndRetry": "Cập nhật thất bại. Nhấp để thử lại", "latestVersion": "Phiên bản mới nhất", "upgrade": "Nâng cấp ngay", "message": { "loadSettingsFailed": "Tải cài đặt thất bại" }, "checkVersion": "Kiểm tra phiên bản", "latestVersionAvailable": "Đã tìm thấy phiên bản mới nhất", "latestVersionNotAvailable": "Đã là phiên bản mới nhất", "testConnection": "Kiểm tra kết nối", "testConnectionTip": "Đang kiểm tra kết nối", "testConnectionSuccess": "Kết nối thành công!", "testConnectionFailed": "Kết nối thất bại, vui lòng kiểm tra cài đặt proxy" };
 const update$2 = { "newVersion": "Phiên bản mới", "newVersionAvailable": "Có phiên bản mới", "whatsNew": "Nội dung cập nhật", "upgradeNow": "Cài đặt cập nhật", "downloading": "Đang tải xuống cập nhật...", "remindAfterDownload": "Nhắc sau", "newVersionReady": "Phiên bản mới đã sẵn sàng", "installNow": "Cài đặt ngay", "remindLater": "Nhắc sau", "installTip": "Phiên bản mới đã sẵn sàng, bạn có muốn cài đặt ngay không?", "laterBtn": "Cài đặt sau", "downloadErrorTip": "Tải xuống thất bại. Vui lòng truy cập trang web của chúng tôi để tải xuống gói cài đặt mới nhất.", "nextUpdate": "Cập nhật tiếp theo", "goWebsite": "Truy cập trang web" };
 const mainMenu$2 = { "download": "Tải xuống liên kết", "online": "Dò tìm trình duyệt", "convert": "Chuyển đổi định dạng", "audioVideoMerger": "Kết hợp âm thanh và video", "joinTelegramGroup": "Tham gia nhóm Telegram", "joinDiscordCommunity": "Tham gia cộng đồng Discord" };
-const application$2 = { "menu": { "download": "Tải xuống", "network": "Trực tuyến", "format": "Chuyển đổi", "merge": "Kết hợp" }, "loading": "Đang tải..." };
+const application$2 = { "menu": { "download": "Tải xuống", "network": "Trực tuyến", "format": "Chuyển đổi", "merge": "Kết hợp", "filesMerge": "Ghép tệp" }, "loading": "Đang tải..." };
 const common$2 = { "cancel": "Hủy", "ok": "OK", "selectAll": "Chọn tất cả", "cancelAll": "Hủy tất cả" };
 const merge$2 = { "noData": "Chọn tệp hoặc kéo vào đây", "selectFiles": "Chọn Tệp", "fileName": "Tên Tệp", "duration": "Thời lượng", "format": "Định dạng", "video": "Video", "audio": "Âm thanh", "subtitle": "Phụ đề", "addFiles": "Thêm Tệp", "clear": "Xóa", "needAddFile": "Vui lòng thêm tệp video", "merge": "Kết hợp", "merging": "Đang kết hợp", "cancel": "Hủy", "failed": "Thất bại", "close": "Đóng", "retry": "Thử lại", "success": "Thành công", "saveTip": "Đã lưu", "view": "Xem", "viewInWin": "Hiển thị trong Thư mục", "viewInMac": "Hiển thị trong Finder", "mergePrefixName": "[Đã kết hợp]" };
 const network$2 = { "search": "Tìm kiếm", "searchPlaceholder": "Tìm kiếm trên trang web", "addSite": "Thêm trang web", "go": "Đi", "noFilesFound": "Không tìm thấy tệp", "emptyTip1": "Không có tệp nào trên trang web này", "emptyTip2": "Thêm trang web để bắt đầu", "resourceTitle": "Tài nguyên", "all": "Tất cả({{number}})", "video": "Video({{number}})", "audio": "Âm thanh({{number}})", "selectAll": "Chọn tất cả", "download": "Tải xuống", "downloadTip": "Tải xuống", "downloadedTip": "Đã tải xuống", "previewTip": "Xem trước", "copyLinkTip": "Sao chép liên kết", "copyLinkSuccess": "Đã sao chép", "live": "Trực tiếp", "addSiteModal": { "title": "Thêm trang web", "url": "URL", "urlPlaceholder": "Nhập URL trang web", "add": "Thêm", "cancel": "Hủy" } };
@@ -31459,6 +31490,7 @@ const vi = {
   application: application$2,
   common: common$2,
   merge: merge$2,
+  filesMerge: filesMergeNs["vi"],
   network: network$2,
   format: format$2
 };
@@ -31478,7 +31510,7 @@ const network$1 = { "search": "搜索", "searchPlaceholder": "按关键词搜索
 const format$1 = { "header": "格式转换", "subHeader": "轻松批量转换媒体文件", "videoConverter": "视频格式转换", "videoDescription": "MP4, MKV, MOV, WebM, AVI, MPEG, WMV, FLV 等格式", "audioConverter": "音频格式转换", "audioDescription": "MP3, AAC, WAV, FLAC, ALAC, M4A, OGG, WMA 等格式", "imageConverter": "图片格式转换", "imageDescription": "JPEG, PNG, GIF, BMP, WebP, RAW, TIFF, HEIF 等格式", "chooseFiles": "选择文件", "tipTitle": "操作指南:", "tip1": "点击“选择文件”或拖入要转换的媒体文件", "tip2": "选择要输出的目标格式", "tip3": "点击“开始转换”，转换后的文件将自动保存至目标目录", "total": "共 {{number}} 个", "failed": "失败 {{number}} 个", "fileName": "文件名", "resolution": "分辨率", "duration": "时长", "original": "原格式", "output": "输出格式", "addFiles": "添加文件", "clear": "清空", "outputFormat": "输出格式", "searchPlaceholder": "搜索", "all": "所有", "video": "视频", "audio": "音频", "convert": "转换", "converting": "转换中", "completed": "转换完成", "clearModal": { "title": "文件正在转换，要清空吗？", "cancel": "取消", "clear": "清空" } };
 const merge$1 = { "noData": "添加文件或将文件拖拽至此处", "selectFiles": "添加文件", "fileName": "文件名", "duration": "时长", "format": "格式", "video": "视频", "audio": "音频", "subtitle": "字幕", "addFiles": "添加文件", "clear": "清空", "needAddFile": "请添加视频文件", "merge": "合并", "merging": "合并中", "cancel": "取消", "failed": "合并失败", "close": "关闭", "retry": "重试", "success": "合并完成", "saveTip": "已保存至指定文件夹", "view": "查看", "viewInWin": "在文件夹中显示", "viewInMac": "在访达中显示", "mergePrefixName": "[合并]" };
 const mainMenu$1 = { "download": "链接下载", "online": "浏览器嗅探", "convert": "格式转换", "audioVideoMerger": "音视频合并", "joinTelegramGroup": "加入Telegram交流群", "joinDiscordCommunity": "加入Discord交流群" };
-const application$1 = { "menu": { "download": "链接下载", "network": "浏览器嗅探", "format": "格式转换", "merge": "音视频合并" }, "loading": "加载中..." };
+const application$1 = { "menu": { "download": "链接下载", "network": "浏览器嗅探", "format": "格式转换", "merge": "音视频合并", "filesMerge": "文件拼接" }, "loading": "加载中..." };
 const common$1 = { "cancel": "取消", "ok": "确定", "selectAll": "全选", "cancelAll": "取消全选" };
 const zhHans = {
   download: download$1,
@@ -31496,6 +31528,7 @@ const zhHans = {
   network: network$1,
   format: format$1,
   merge: merge$1,
+  filesMerge: filesMergeNs["zh-Hans"],
   mainMenu: mainMenu$1,
   application: application$1,
   common: common$1
@@ -31516,7 +31549,7 @@ const network = { "search": "搜尋", "searchPlaceholder": "按關鍵詞搜尋",
 const format = { "header": "格式轉換", "subHeader": "輕鬆批量轉換媒體檔案", "videoConverter": "影片格式轉換", "videoDescription": "MP4, MKV, MOV, WebM, AVI, MPEG, WMV, FLV 等格式", "audioConverter": "音訊格式轉換", "audioDescription": "MP3, AAC, WAV, FLAC, ALAC, M4A, OGG, WMA 等格式", "imageConverter": "圖片格式轉換", "imageDescription": "JPEG, PNG, GIF, BMP, WebP, RAW, TIFF, HEIF 等格式", "chooseFiles": "選擇檔案", "tipTitle": "操作指南:", "tip1": "點擊「選擇檔案」或拖入要轉換的媒體檔案", "tip2": "選擇要輸出的目標格式", "tip3": "點擊「開始轉換」，轉換後的檔案將自動儲存至目標目錄", "total": "共 {{number}} 個", "failed": "失敗 {{number}} 個", "fileName": "檔案名稱", "resolution": "解析度", "duration": "時長", "original": "原格式", "output": "輸出格式", "addFiles": "添加檔案", "clear": "清空", "outputFormat": "輸出格式", "searchPlaceholder": "搜尋", "all": "所有", "video": "影片", "audio": "音訊", "convert": "轉換", "converting": "轉換中", "completed": "轉換完成", "clearModal": { "title": "檔案正在轉換，要清空嗎？", "cancel": "取消", "clear": "清空" } };
 const merge = { "noData": "點擊添加檔案或將檔案拖拽至此處", "selectFiles": "添加檔案", "fileName": "檔案名稱", "duration": "時長", "format": "格式", "video": "影片", "audio": "音訊", "subtitle": "字幕", "addFiles": "添加檔案", "clear": "清空", "needAddFile": "請添加影片檔案", "merge": "合併", "merging": "合併中", "cancel": "取消", "failed": "合併失敗", "close": "關閉", "retry": "重試", "success": "合併完成", "saveTip": "已保存至指定資料夾", "view": "查看", "viewInWin": "在資料夾中顯示", "viewInMac": "在訪達中顯示", "mergePrefixName": "[合併]" };
 const mainMenu = { "download": "連結下載", "online": "瀏覽器嗅探", "convert": "格式轉換", "audioVideoMerger": "音視頻合併", "joinTelegramGroup": "加入Telegram交流群", "joinDiscordCommunity": "加入Discord交流群" };
-const application = { "menu": { "download": "連結下載", "network": "瀏覽器嗅探", "format": "格式轉換", "merge": "音視頻合併" }, "loading": "加載中..." };
+const application = { "menu": { "download": "連結下載", "network": "瀏覽器嗅探", "format": "格式轉換", "merge": "音視頻合併", "filesMerge": "檔案拼接" }, "loading": "加載中..." };
 const common = { "cancel": "取消", "ok": "確定", "selectAll": "全選", "cancelAll": "取消全選" };
 const zhHant = {
   download,
@@ -31534,6 +31567,7 @@ const zhHant = {
   network,
   format,
   merge,
+  filesMerge: filesMergeNs["zh-Hant"],
   mainMenu,
   application,
   common
@@ -51716,6 +51750,258 @@ function MergePage() {
     }
   );
 }
+function FilesMergeHeader() {
+  const { t: t2 } = useTranslation();
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between border-b border-gray-200 bg-white py-3 px-4 text-xs text-gray-500 font-semibold rounded-t-lg", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t2("merge.fileName") }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-shrink-0 grid grid-cols-2 gap-2 min-w-[150px] flex-[0_0_190px]", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-center", children: t2("merge.duration") }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", {})
+    ] })
+  ] });
+}
+function FilesMergeItem({ index: idx, item, onDelete }) {
+  const { t: t2 } = useTranslation();
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 h-11 box-content py-1 px-4 bg-white border-b-1 border-gray-300 last:border-0 last:[&>div]:rounded-b-lg", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 flex-shrink-0 text-xs text-gray-400 text-right", children: idx + 1 }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-0 flex-1 flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: item.name, theme: { target: "truncate" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate text-xs text-gray-900", children: item.name }) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-shrink-0 grid grid-cols-2 gap-2 min-w-[150px] flex-[0_0_190px] items-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-gray-900 text-center", children: item.duration > 0 ? formatDuration(item.duration) : "--" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Tooltip, { content: t2("taskActions.delete"), children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        TbTrash,
+        {
+          className: "w-7 h-7 p-1 text-gray-500 cursor-pointer rounded hover:bg-gray-100",
+          onClick: () => onDelete(item.filePath)
+        }
+      ) }) })
+    ] })
+  ] });
+}
+function FilesMergePage() {
+  const { t: t2 } = useTranslation();
+  const fileInputRef = reactExports.useRef(null);
+  const [fileData, setFileData] = reactExports.useState([]);
+  const [order, setOrder] = reactExports.useState("asc");
+  const [isAdding, setIsAdding] = reactExports.useState(false);
+  const { progressData, cancelMerge, clearProgressData } = useMergeStore();
+  const collator = reactExports.useMemo(() => new Intl.Collator(undefined, { numeric: true, sensitivity: "base" }), []);
+  const sortedFiles = reactExports.useMemo(() => {
+    const sorted = [...fileData].sort((a, b) => collator.compare(a.name, b.name) || collator.compare(a.filePath, b.filePath));
+    return order === "desc" ? sorted.reverse() : sorted;
+  }, [fileData, order, collator]);
+  const handleFiles = async (files) => {
+    if (!files || files.length === 0)
+      return;
+    setIsAdding(true);
+    try {
+      const filePaths = [];
+      for (const file of files) {
+        const filePath = window.api.getFilePathFromFile(file);
+        filePaths.push(filePath ?? "");
+      }
+      const result = await client$1?.getFilesMediaInfo(filePaths);
+      if (result?.success) {
+        const items = (result.data || []).map((item) => {
+          const duration = (item.children || []).reduce((max, c) => {
+            const d = Number(c == null ? void 0 : c.duration) || 0;
+            return d > max ? d : max;
+          }, 0);
+          return { filePath: item.filePath, name: item.name, duration };
+        });
+        setFileData((prev) => {
+          const map2 = /* @__PURE__ */ new Map(prev.map((i) => [i.filePath, i]));
+          items.forEach((i) => map2.set(i.filePath, i));
+          return [...map2.values()];
+        });
+        clearProgressData();
+      } else {
+        Notice.error(t2("merge.failed"));
+      }
+    } catch (error) {
+      console.error("上传文件失败:", error);
+      Notice.error(t2("merge.failed"));
+    } finally {
+      setIsAdding(false);
+    }
+  };
+  const handleFileChange = reactExports.useCallback(async (e) => {
+    const files = Array.from(e.target.files || []);
+    await handleFiles(files);
+    e.target.value = "";
+  }, [fileData.length]);
+  const handleDragOver = reactExports.useCallback((e) => {
+    e.preventDefault();
+  }, []);
+  const handleDragLeave = reactExports.useCallback((e) => {
+    e.preventDefault();
+  }, []);
+  const handleDrop = reactExports.useCallback(async (e) => {
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files || []);
+    await handleFiles(files);
+  }, [fileData.length]);
+  const handleDelete = (filePath) => {
+    setFileData((prev) => prev.filter((i) => i.filePath !== filePath));
+  };
+  const handleMerge = async () => {
+    if (sortedFiles.length === 0 || isAdding)
+      return;
+    const first = sortedFiles[0];
+    clearProgressData();
+    await client$1?.filesMerge({
+      files: sortedFiles.map((i) => i.filePath),
+      outputName: `${t2("merge.mergePrefixName")}${first.name}`
+    });
+  };
+  const handleRetry = () => {
+    clearProgressData();
+    handleMerge();
+  };
+  const handleView = () => {
+    if (!progressData?.outputPath)
+      return;
+    client$1.openFileDir({ filePath: progressData?.outputPath });
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      className: "w-full h-full relative",
+      onDragOver: handleDragOver,
+      onDragLeave: handleDragLeave,
+      onDrop: handleDrop,
+      children: [
+        fileData.length > 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full h-full flex flex-col", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-base font-medium text-gray-900 pt-4 px-4", children: [
+            t2("application.menu.filesMerge"),
+            " ",
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm font-normal", children: [
+              "(",
+              fileData.length,
+              ")"
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-gray-500 px-4 pt-1", children: t2("filesMerge.tip") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full p-4 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "rounded-lg", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(FilesMergeHeader, {}),
+            sortedFiles.map((item, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(FilesMergeItem, { index: idx, item, onDelete: handleDelete }, item.filePath))
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("footer", { className: "shrink-0 w-full flex items-center justify-between p-4 bg-white", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { outline: true, color: "blue", onClick: () => fileInputRef.current?.click(), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2 text-sm font-medium", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(SvgPlus, { className: "w-4 h-4" }),
+                t2("merge.addFiles")
+              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { outline: true, color: "black", onClick: () => setFileData([]), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2 text-sm font-medium", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(GrClearOption, { className: "w-4 h-4" }),
+                t2("merge.clear")
+              ] }) })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                Dropdown,
+                {
+                  label: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-gray-500", children: t2("merge.duration") }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: order === "asc" ? t2("filesMerge.orderAsc") : t2("filesMerge.orderDesc") })
+                  ] }),
+                  inline: true,
+                  theme: {
+                    arrowIcon: "ml-1 w-5 h-5",
+                    inlineWrapper: "flex items-center p-1 rounded cursor-pointer disabled:cursor-not-allowed hover:bg-gray-100",
+                    content: "focus:outline-none"
+                  },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      DownloadConfig,
+                      {
+                        label: t2("filesMerge.orderAsc"),
+                        showCheck: order === "asc",
+                        onClick: () => setOrder("asc")
+                      },
+                      "asc"
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      DownloadConfig,
+                      {
+                        label: t2("filesMerge.orderDesc"),
+                        showCheck: order === "desc",
+                        onClick: () => setOrder("desc")
+                      },
+                      "desc"
+                    )
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: handleMerge, disabled: sortedFiles.length === 0 || isAdding, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2 text-sm font-medium", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(TbFold, { className: "w-5 h-5" }),
+                t2("merge.merge")
+              ] }) })
+            ] })
+          ] })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full h-full flex items-center justify-center", children: progressData?.status === "success" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-8 mx-8", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center gap-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(SvgCheckCircle$1, { className: "w-33 h-33 text-green-700" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg font-bold text-black", children: t2("merge.success") }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-base text-center text-gray-900", children: progressData?.outputName })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { outline: true, color: "blue", onClick: () => fileInputRef.current?.click(), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(SvgPlus, { className: "w-4 h-4" }),
+              t2("merge.selectFiles")
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: handleView, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(SvgFolder, { className: "w-4 h-4" }),
+              isWin ? t2("merge.viewInWin") : t2("merge.viewInMac")
+            ] }) })
+          ] })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-3 items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-medium text-gray-600", children: t2("merge.noData") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { className: "w-fit", onClick: () => fileInputRef.current?.click(), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(SvgPlus, { className: "w-4 h-4" }),
+            t2("merge.selectFiles")
+          ] }) })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            ref: fileInputRef,
+            type: "file",
+            multiple: true,
+            accept: "video/*,.mp4,.mkv,.mov,.webm,.avi,.flv,.ts",
+            className: "hidden",
+            onChange: handleFileChange
+          }
+        ),
+        progressData?.status === "merging" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 z-10 w-full h-full flex items-center justify-center bg-black/80", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Progress,
+            {
+              percent: progressData.progress,
+              type: "circle",
+              size: 100,
+              strokeWidth: 7,
+              showInfo: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-lg text-white font-bold", children: [
+                Math.floor(progressData.progress),
+                "%"
+              ] })
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 mb-8 text-lg font-bold text-white", children: t2("merge.merging") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { color: "gray", onClick: cancelMerge, children: t2("merge.cancel") })
+        ] }) }),
+        progressData?.status === "error" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 z-10 w-full h-full flex items-center justify-center bg-black/60", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center text-white", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(SvgExclamationCircle, { className: "w-33 h-33 text-red-700 stroke-2" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-lg font-bold my-4", children: t2("merge.failed") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-center", children: progressData.error }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 flex items-center gap-8", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { color: "gray", onClick: clearProgressData, children: t2("merge.close") }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { color: "dark", onClick: handleRetry, children: t2("merge.retry") })
+          ] })
+        ] }) })
+      ]
+    }
+  );
+}
 const applicationMenuRouter = [
   {
     key: "application.menu.download",
@@ -51740,6 +52026,12 @@ const applicationMenuRouter = [
     icon: /* @__PURE__ */ jsxRuntimeExports.jsx(TbFold, {}),
     path: "/merge",
     element: /* @__PURE__ */ jsxRuntimeExports.jsx(MergePage, {})
+  },
+  {
+    key: "application.menu.filesMerge",
+    icon: /* @__PURE__ */ jsxRuntimeExports.jsx(TbLink, {}),
+    path: "/filesmerge",
+    element: /* @__PURE__ */ jsxRuntimeExports.jsx(FilesMergePage, {})
   }
 ];
 const routers = applicationMenuRouter.concat([

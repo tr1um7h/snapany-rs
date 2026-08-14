@@ -103,6 +103,26 @@ patches/snapany-app/
 
 ## 使用方法
 
+### 首次部署（asar 布局 → app/ 目录布局）
+
+```bash
+cd patches/snapany-app
+./init-from-asar.sh
+```
+
+一次性转换：解包 `app.asar` → `Resources/app/`，合入 `app.asar.unpacked`，应用全部补丁，
+`app.asar` 改名为 `app.asar.disabled`（保留以便回滚），重签名。
+之后 Electron 自动从 `app/` 目录加载，补丁只需覆盖 JS 文件。
+
+回滚布局：`rm -rf /Applications/SnapAny.app/Contents/Resources/app && mv .../app.asar.disabled .../app.asar`，再重签名。
+
+### Files Merge（文件拼接）功能
+
+侧边栏新增菜单「文件拼接」：
+- 添加/拖入多个视频 → 按文件名自然排序（默认升序，footer 下拉可切降序）→ 合并
+- ffmpeg concat demuxer，优先无损流复制（秒级），参数不一致时自动整体重编码
+- 输出到设置的下载目录，格式沿用设置的视频格式
+
 ### 应用所有补丁
 
 ```bash
