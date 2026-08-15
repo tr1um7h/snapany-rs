@@ -170,3 +170,4 @@ cd patches/snapany-app
 - 签名是 ad-hoc，严格签名验证会失败，但应用可正常运行
 - 原文件会被备份为 `.bak` 后缀
 - GitHub releases 有速率限制（60 次/小时/IP），频繁更新可能被限流
+- **大会员内容下载限制**：≤1080p 分片实测为明文（无需解密），但当前 yt-dlp（2026.07.04）的 bilibili bangumi 提取器对 `is_drm` 内容读 SSR 拿不到流且不回退 playurl API，叠加 SnapAny 登录态未导出，导致 `No video formats found`。详见 `arch.md` 第十三章。

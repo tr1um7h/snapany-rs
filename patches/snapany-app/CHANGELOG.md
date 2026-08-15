@@ -2,6 +2,22 @@
 
 SnapAny App 补丁修改记录
 
+## [1.3.0] - 2026-08-15
+
+### 修复（Phase 1：登录态）
+- `verifyLogin` 增加 bilibili 分支：点名检查 `SESSDATA` + `bili_jct`，修复「仅访问就种匿名 cookie（`buvid3`）导致误判已登录」的问题（此前 bilibili 走 `cookies.length > 0` 回退，误标为已授权且导出的 cookies.txt 无登录态）
+- `authSites` 默认列表新增 Bilibili（含幂等迁移：去重旧的无 www 条目、重置误标授权状态，确保恰有一条规范条目）
+- `getParseInfo` 每次解析前重新调用 `saveCookieFile()` 导出 cookies.txt，使嗅探页/任意 webview 登录后立即生效（此前只在 `completeAuth` 时导出）
+
+### 说明
+- 该期修复「登录态未进下载链路」；yt-dlp bilibili bangumi 提取器缺陷（#13795/#13634）仍待上游修复，见 `arch.md` 第十三章
+
+---
+
+# Changelog
+
+SnapAny App 补丁修改记录
+
 ## [1.2.0] - 2026-08-14
 
 ### 新增

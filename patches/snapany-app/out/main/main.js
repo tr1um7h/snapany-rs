@@ -147,10 +147,33 @@ const settingStore = new Store({
         authUrl: "https://x.com",
         isAuthorized: false,
         enableDelete: false
+      },
+      {
+        name: "Bilibili",
+        url: "https://www.bilibili.com",
+        authUrl: "https://www.bilibili.com",
+        isAuthorized: false,
+        enableDelete: false
       }
     ]
   }
 });
+// [PATCH] authSites 老用户迁移：幂等去重，确保恰有一条规范 bilibili 条目
+// （旧版本可能已有无 www 的条目，且 verifyLogin 旧逻辑会把仅匿名 cookie 误标为已授权）
+{
+  const canonicalBili = {
+    name: "Bilibili",
+    url: "https://www.bilibili.com",
+    authUrl: "https://www.bilibili.com",
+    isAuthorized: false,
+    enableDelete: false
+  };
+  const authSites = settingStore.get("authSites");
+  if (Array.isArray(authSites)) {
+    const others = authSites.filter((site) => !site || !/bilibili\.com/.test(site.url || ""));
+    settingStore.set("authSites", [...others, canonicalBili]);
+  }
+}
 const defaultExtFilters = [
   { ext: "flv", minSize: 0, enabled: true },
   { ext: "hlv", minSize: 0, enabled: true },
@@ -3490,6 +3513,17 @@ class AuthService {
         (cookie) => cookie.name === "auth_token" || cookie.name === "twid"
       );
     }
+    // [PATCH] bilibili：仅访问也会种 buvid3 等匿名 cookie，必须点名检查登录态 cookie
+    if (domain.includes("bilibili.com")) {
+      const bilibiliCookies = cookies.filter(
+        (cookie) => cookie.domain && cookie.domain.includes("bilibili.com")
+      );
+      return bilibiliCookies.some(
+        (cookie) => cookie.name === "SESSDATA"
+      ) && bilibiliCookies.some(
+        (cookie) => cookie.name === "bili_jct"
+      );
+    }
     return cookies.length > 0;
   }
   async getCookiesFilePath() {
@@ -3614,6 +3648,10 @@ class YtDlpService {
     if (proxyConfig.mode !== "system") {
       args.push("--proxy", proxyConfig.proxyRules);
     }
+    // [PATCH] 解析前总是重新导出 cookie，确保嗅探页/任意 webview 登录后也能生效
+    await authService.saveCookieFile().catch((error) => {
+      console.error("导出 cookie 文件失败:", error);
+    });
     const cookiePath = await authService.getCookiesFilePath();
     if (cookiePath !== "") {
       args.push("--cookies", cookiePath);

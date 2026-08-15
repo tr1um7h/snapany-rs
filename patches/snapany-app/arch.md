@@ -913,3 +913,52 @@ VideoAudioConverService / VideoAudioMergeService（独立于下载流程）
 SystemService（独立）
   → 软件更新、yt-dlp 更新、系统操作
 ```
+
+---
+
+## 十三、已知限制：大会员内容下载（登录态 + yt-dlp 提取器）
+
+> 2026-08 实测（ss46302《超人总动员》，yt-dlp 2026.07.04）。本节经历两次修正，结论以本版为准：
+> ① 初版误把 `is_drm: True` 当作"内容被加密、需解密模块"；② 二版误以为"只需登录态、不是 yt-dlp 问题"。**实测最终结论：失败是「登录态缺失」与「yt-dlp bilibili bangumi 提取器」两层叠加。**
+
+**结论**：≤1080p 的分片本身是明文（无需解密），但即使给 yt-dlp 有效登录 cookie，当前版本仍报 `No video formats found`——根因在 yt-dlp 提取器，不在 SnapAny 的下载/合并链路。
+
+### 13.1 实测证据链（ss46302）
+
+| 视角 | 结果 |
+|------|------|
+| 匿名（SnapAny `cookies.txt` 无 `SESSDATA`） | `is_preview:1, vip_type:None` → yt-dlp 报 `No video formats found` |
+| 有效 VIP 登录（Bili23 的 `SESSDATA`）跑 yt-dlp | **仍报 `No video formats found`**（登录不是充分条件） |
+| 有效 VIP 登录查 v2 playurl API | `video_info.dash` 完整（360p→1080p），`drmTechType: None`，`play_check.play_detail: PLAY_WHOLE` |
+| 网页内嵌 `playurlSSRData`（yt-dlp 优先读它） | `play_video_type: "none"`、`arc.is_drm: true`、`video_info` **无 `dash`/`durl`** |
+| 实测分片字节头 | m4s 前 16 字节 `0000002466747970…`（标准 MP4 `ftyp`）→ **明文** |
+
+即：分片是明文、可下；但 yt-dlp 的 `BiliBiliBangumi` 提取器**优先读网页内嵌的 `playurlSSRData`**，而 `is_drm` 内容的 SSR 数据里 `video_info` 不含 `dash`/`durl`，提取器拿到 0 个格式后**不会回退到 v2 playurl API**，于是报 `No video formats found`。上游已知 issue：yt-dlp #13795、#13634。
+
+### 13.2 两层根因
+
+| 层 | 现象 | 位置 | 修复 |
+|----|------|------|------|
+| ① 登录态 | SnapAny `cookies.txt` 无 `SESSDATA`/`bili_jct` | SnapAny `AuthService`（`completeAuth` 才写 cookie 文件） | 修 cookie 导出 |
+| ② yt-dlp 提取器 | 有登录仍拿不到格式（SSR 无流且不回退 v2 API） | yt-dlp `extractor/bilibili.py`（`BiliBiliBangumi`） | 升级 yt-dlp，或 SnapAny 侧直连 v2 API 绕过 |
+
+### 13.3 Bili23 为什么能下（已核对源码）
+
+Bili23-Downloader **不含任何 m4s 解密逻辑**（已核对 v2.12.1 源码、装机 v2.13.0、上游 v2.14.0：仅 md5 签名 / murmur3 指纹，`previewer` 对 `is_drm` 直接拒绝）。它能下载，靠的是：① QR 登录保存有效 `SESSDATA`；② **直接调 bilibili API 拿明文 DASH 分片**后 ffmpeg 合流（不走 yt-dlp，因此不受 13.2 第②层影响）。**"把 Bili23 的解密逻辑独立出来"不成立——它没有解密代码。**
+
+### 13.4 各内容类型对照
+
+| 内容类型 | 示例 | 需要什么 | SnapAny 现状 |
+|---------|------|---------|-------------|
+| 公开/普通视频 | 一般 bilibili 视频 | 无 | ✅ 可下载 |
+| 需登录且明文（≤1080p） | ss46302 这类大会员番剧/电影 | 有效登录态 **且** 绕过 yt-dlp 提取器缺陷 | ❌ 两层都缺 |
+| 真 DRM（1080P+/4K/杜比） | 大会员高画质档 | 本地解密（bilibili 私有 AES） | ❌ 无解密能力（Bili23 亦不支持） |
+| Widevine/PlayReady | Netflix/Disney+ 等 | 无法本地破解 | ❌ 无解 |
+
+### 13.5 补齐方向
+
+1. **登录态导出**（必要但不充分）：修复 SnapAny 把 bilibili 登录 cookie 写入 yt-dlp 使用的 `cookies.txt`。
+2. **绕过/修复 yt-dlp 提取器**（真正卡点）：二选一——
+   - a. ~~升级 yt-dlp~~（已验证：稳定版 2026.07.04 与 nightly 2026.08.04 均仍报 `No video formats found`，上游 #13795/#13634 未修复，2026-08 结论：升级无效）；
+   - b. SnapAny 侧对 bilibili 番剧直连 `pgc/player/web/v2/playurl` 拿明文 DASH 流，再交给 snapfile+ffmpeg（绕开 yt-dlp 的 bangumi 提取器）。**这是当前唯一可行路径，待上游修复后再评估是否仍需要。**
+3. **（可选、较大、合规存疑）真 DRM 解密**：仅 1080P+/4K/杜比档需要，需从 BBDown 或社区 Python 移植，Bili23 无此逻辑。
